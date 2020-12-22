@@ -1,0 +1,24 @@
+body::after {
+    background-image: url('/images/bg.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    content: "";
+    opacity: 0.6;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    filter: grayscale(60%);
+    position: absolute;
+    z-index: -1;
+}
+.w-70 {
+    width: 20rem;
+}
+.message {
+    transition: all 1s ease-in;
+}
+p {
+    color: white;
+}
