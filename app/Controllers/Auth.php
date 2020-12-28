@@ -11,6 +11,8 @@ use App\Libraries\Mob;
 use App\Models\MercadopagoRequests;
 use App\Models\MercadopagoPincode;
 use App\Models\PicpayRequests;
+use App\Models\Donate;
+use App\Models\DonateBonus;
 use Exception;
 use MercadoPago;
 
@@ -225,7 +227,7 @@ class Auth extends BaseController
         $this->data['error'] = 'Você precisa estar logado para enviar guildmark!';
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
     }
-
+    
     public function mob()
     {
         if (session()->has('login')) {
@@ -256,6 +258,67 @@ class Auth extends BaseController
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
     }
 
+    public function createpackage()
+    {
+        if (session()->has('login')) {
+            if (session()->get('login')['access'] == 3) {
+                if ($this->request->getMethod(true) == 'POST') {
+                    if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
+                        $package = new Donate();
+                        $data = $this->request->getPost();
+                        if ($package->save($data)) {
+                            $this->data['success'] = 'Pacotecriado  com sucesso!';
+                        } else $this->data['error'] = implode("<div class=\"grid mt-5\"></div>", $package->errors());
+                    } else $this->data['error'] = 'Recaptcha inválido';
+                } else $this->data['error'] = 'Requisição inválida';
+                return redirect()->to(base_url('admin/donate'))->with($this->rettype, $this->data);
+            }
+        }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+
+    public function editpackage()
+    {
+        if (session()->has('login')) {
+            if (session()->get('login')['access'] == 3) {
+                $ret = 'donate';
+                if ($this->request->getMethod(true) == 'POST') {
+                    if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
+                        $package = new Donate();
+                        $id = $this->request->getPost('id');
+                        if ($id > 0) {
+                            $ret = 'editpackage/' . $id;
+                            $data = $this->request->getPost();
+                            if ($package->update($id, $data)) {
+                                $this->data['success'] = 'Pacote alterado com sucesso!';
+                            } else $this->data['error'] = implode("<div class=\"grid mt-5\"></div>", $package->errors());
+                        } else $this->data['error'] = 'Pacote inválido';
+                    } else $this->data['error'] = 'Recaptcha inválido';
+                } else $this->data['error'] = 'Requisição inválida';
+                return redirect()->to(base_url('admin/' . $ret))->with($this->rettype, $this->data);
+            }
+        }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+
+    public function delpackage($id = null)
+    {
+        if (session()->has('login')) {
+            if (session()->get('login')['access'] == 3) {
+                if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
+                    if ($id > 0) {
+                        $package = new Donate();
+                        if ($package->where('id', $id)->delete()) {
+                            $this->data['success'] = 'Pacote deletado com sucesso!';
+                        } else $this->data['error'] = 'Não foi possível deletar o pacote!';
+                    } else $this->data['error'] = 'Pacote inválida!';
+                } else $this->data['error'] = 'Recaptcha inválido!';
+                return redirect()->to(base_url('admin/donate'))->with($this->rettype, $this->data);
+            }
+        }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+    
     public function createnews()
     {
         if (session()->has('login')) {
