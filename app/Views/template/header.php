@@ -29,7 +29,9 @@
                     </button>
                     <div x-show="show" class="absolute text-white rounded-b-lg bg-black shadow-md" style="min-width:10rem;z-index:999;">
                         <?php if (session()->get('login')['access'] == 3) : ?>
-                            <a class="block hover:bg-gray-800 px-3 py-2" href="<?= base_url('dashboard/news') ?>">Notícias</a>
+                            <a class="block bg-gray-900 hover:bg-gray-800 px-3 py-2" href="<?= base_url('admin/config') ?>">Configurações</a>
+                            <a class="block bg-gray-900 hover:bg-gray-800 px-3 py-2" href="<?= base_url('admin/news') ?>">Notícias</a>
+                            <a class="block bg-gray-900 hover:bg-gray-800 px-3 py-2" href="<?= base_url('admin/donate') ?>">Doação</a>
                         <?php endif; ?>
                         <a class="block hover:bg-gray-800 px-3 py-2" href="<?= base_url('dashboard/tickets') ?>">Suporte</a>
                         <a class="block hover:bg-gray-800 px-3 py-2" href="<?= base_url('dashboard/alterpass') ?>">Alterar senha</a>

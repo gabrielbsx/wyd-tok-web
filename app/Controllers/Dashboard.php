@@ -57,30 +57,6 @@ class Dashboard extends BaseController
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
     }
 
-    public function createnews()
-    {
-        if (session()->has('login')) {
-            if (session()->get('login')['access'] == 3) {
-                return view('dashboard/pages/createnews', $this->data);
-            }
-        }
-        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
-    }
-
-    public function editnews($id = null)
-    {
-        if (session()->has('login')) {
-            if (session()->get('login')['access'] == 3) {
-                if ($id > 0) {
-                    $news = new News();
-                    $this->data['news'] = $news->where('id', $id)->first();
-                }
-                return view('dashboard/pages/editnews', $this->data);
-            }
-        }
-        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
-    }
-
     public function answerticket($id = null)
     {
         if (session()->has('login')) {
@@ -120,19 +96,6 @@ class Dashboard extends BaseController
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
     }
 
-    public function news()
-    {
-        if (session()->has('login')) {
-            if (session()->get('login')['access'] == 3) {
-                $news = new News();
-                $this->data['paginate_news'] = $news->orderBy('id', 'DESC')->paginate(5, 'news');
-                $this->data['pager_news'] = $news->pager;
-                return view('dashboard/pages/news', $this->data);
-            }
-        }
-        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
-    }
-
     public function donation()
     {
         if (session()->has('login')) {
@@ -142,18 +105,6 @@ class Dashboard extends BaseController
             $this->data['donate_pager'] = $donate->pager;
             return view('dashboard/pages/donation', $this->data);
         } else $this->data['error'] = 'Você precisa estar logado para doar!';
-        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
-    }
-
-    public function config()
-    {
-        if (session()->has('login')) {
-            if (session()->get('login')['access'] == 3) {
-                $config = new Configuration();
-                $this->data['configuration'] = $config->first();
-                return view('dashboard/pages/configuration', $this->data);
-            }
-        }
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
     }
 
