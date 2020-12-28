@@ -333,7 +333,7 @@ class Auth extends BaseController
                         } else $this->data['error'] = implode("<div class=\"grid mt-5\"></div>", $news->errors());
                     } else $this->data['error'] = 'Recaptcha inválido';
                 } else $this->data['error'] = 'Requisição inválida';
-                return redirect()->to(base_url('dashboard/createnews'))->with($this->rettype, $this->data);
+                return redirect()->to(base_url('admin/createnews'))->with($this->rettype, $this->data);
             }
         }
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
@@ -358,7 +358,7 @@ class Auth extends BaseController
                         } else $this->data['error'] = 'Notícia inválida';
                     } else $this->data['error'] = 'Recaptcha inválido';
                 } else $this->data['error'] = 'Requisição inválida';
-                return redirect()->to(base_url('dashboard/' . $ret))->with($this->rettype, $this->data);
+                return redirect()->to(base_url('admin/' . $ret))->with($this->rettype, $this->data);
             }
         }
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
@@ -376,7 +376,7 @@ class Auth extends BaseController
                         } else $this->data['error'] = 'Não foi possível deletar a notícia!';
                     } else $this->data['error'] = 'Notícia inválida!';
                 } else $this->data['error'] = 'Recaptcha inválido!';
-                return redirect()->to(base_url('dashboard/news'))->with($this->rettype, $this->data);
+                return redirect()->to(base_url('admin/news'))->with($this->rettype, $this->data);
             }
         }
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);

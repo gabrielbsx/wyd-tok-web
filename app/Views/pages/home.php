@@ -33,14 +33,10 @@
             <?php endif; ?>
         <?php else : ?>
             <div class="grid px-4 py-4">
-                <div class="inline-grid lg:flex bg-gray-800 border-b-4 border-r-4 border-gray-900 rounded-lg shadow-lg pb-6 lg:pb-0">
-                    <div class="w-full lg:w-1/3 lg:p-4">
-                        <img src="https://wydbr.com/wp-content/uploads/2019/11/download-1.png" alt="image" class="rounded-lg h-64 lg:h-full object-cover object-center w-full">
-                    </div>
-                    <div class="w-full lg:w-2/3 p-4">
+                <div class="inline-grid text-center lg:flex bg-gray-800 border-b-4 border-r-4 border-gray-900 rounded-lg shadow-lg pb-6 lg:pb-0">
+                    <div class="w-full p-4">
                         <div class="inline-grid">
                             <p class="work-sans font-semibold text-xl text-white">Não há notícias registrada</p>
-                            <span class="mt-1 text-gray-400 ml-8"><?= date('Y-m-d H:i:s') ?></span>
                         </div>
                     </div>
                 </div>

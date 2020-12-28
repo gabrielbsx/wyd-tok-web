@@ -9,6 +9,8 @@ use App\Models\News;
 use App\Models\Tickets;
 use App\Models\MercadopagoRequests;
 use App\Models\PicpayRequests;
+use App\Models\Donate;
+use App\Models\DonateBonus;
 
 class Dashboard extends BaseController
 {
@@ -100,9 +102,12 @@ class Dashboard extends BaseController
     {
         if (session()->has('login')) {
             $donate = new Users();
+            $package = new Donate();
             //$this->data['donate_paginate'] = $donate->join('picpay_requests', 'picpay_requests.id_user = mercadopago_requests.id_user')->where(['mercadopago_requests.id_user' => session()->get('login')['id'], 'picpay_requests.id_user' => session()->get('login')['id']])->orderBy('mercadopago_requests.id', 'DESC')->paginate(3, 'donate');
             $this->data['donate_paginate'] = $donate->join('picpay_requests', 'picpay_requests.id_user = users.id', 'left')->join('mercadopago_requests', 'mercadopago_requests.id_user = users.id', 'left')->where(['users.id' => session()->get('login')['id']])->paginate(3, 'donate');
             $this->data['donate_pager'] = $donate->pager;
+            $this->data['package_paginate'] = $package->orderBy('id', 'ASC')->paginate(10, 'package');
+            $this->data['package_pager'] = $package->pager;
             return view('dashboard/pages/donation', $this->data);
         } else $this->data['error'] = 'Você precisa estar logado para doar!';
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);

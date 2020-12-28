@@ -9,7 +9,7 @@
             <div class="bg-black rounded-b-lg">
                 <div class="px-24 py-12 text-white place-items-center">
                     <?php foreach ($configuration as $key => $value) : ?>
-                        <?php if (in_array($key, ['deleted_at', 'created_at', 'updated_at'])) continue; ?>
+                        <?php if (in_array($key, ['deleted_at', 'created_at', 'updated_at', 'id'])) continue; ?>
                         <label for="<?= $key ?>" class="block mt-2 text-xs font-semibold text-gray-400 uppercase"><?= str_replace('_', ' ', $key) ?></label>
                         <input id="<?= $key ?>" type="text" name="<?= $key ?>" value="<?= $value ?>" class="mb-4 block rounded w-full p-3 mt-2 text-gray-200 bg-gray-800 appearance-none focus:outline-none focus:bg-gray-900 focus:shadow-inner" required />
                     <?php endforeach; ?>
