@@ -76,6 +76,7 @@ class Admin extends BaseController
                 return view('dashboard/pages/admin/donate', $this->data);
             }
         }
+        return redirect()->to(base_Url('site'))->with($this->rettype, $this->data);
     }
 
     public function editpackage($id = null)
@@ -84,9 +85,40 @@ class Admin extends BaseController
             if (session()->get('login')['access'] == 3) {
                 if ($id > 0) {
                     $package = new Donate();
+                    $bonus = new DonateBonus();
                     $this->data['package'] = $package->where('id', $id)->first();
+                    $this->data['paginate_bonus'] = $bonus->where('id_donate', $id)->paginate(5, 'bonus');
+                    $this->data['pager_bonus'] = $bonus->pager;
                 }
                 return view('dashboard/pages/admin/editpackage', $this->data);
+            }
+        }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+
+    public function additem($id = null)
+    {
+        if (session()->has('login')) {
+            if (session()->get('login')['access'] == 3) {
+                if ($id > 0) {
+                    $this->data['id'] = $id;
+                    return view('dashboard/pages/admin/additem', $this->data);
+                } else $this->data['error'] = 'Pacote inválido!';
+                return redirect()->to(base_url('admin/donate'))->with($this->rettype, $this->data);
+            }
+        }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+
+    public function edititem($id = null)
+    {
+        if (session()->has('login')) {
+            if (session()->get('login')['access'] == 3) {
+                if ($id > 0) {
+                    $bonus = new DonateBonus();
+                    $this->data['bonus'] = $bonus->where(['id' => $id])->first();
+                }
+                return view('dashboard/pages/admin/edititem', $this->data);
             }
         }
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
@@ -100,5 +132,6 @@ class Admin extends BaseController
                 return view('dashboard/pages/admin/packagedonate', $this->data);
             }
         }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
     }
 }

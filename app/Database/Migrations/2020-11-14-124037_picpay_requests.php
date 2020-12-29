@@ -19,23 +19,7 @@ class PicpayRequests extends Migration
 				'type' => 'BIGINT',
 				'unsigned' => true
 			],
-			'firstname' => [
-				'type' => 'VARCHAR',
-				'constraint' => '100'
-			],
-			'lastname' => [
-				'type' => 'VARCHAR',
-				'constraint' => '100'
-			],
-			'document' => [
-				'type' => 'VARCHAR',
-				'constraint' => '100'
-			],
 			'email' => [
-				'type' => 'VARCHAR',
-				'constraint' => '100'
-			],
-			'phone' => [
 				'type' => 'VARCHAR',
 				'constraint' => '100'
 			],

@@ -11,6 +11,8 @@ use App\Models\MercadopagoRequests;
 use App\Models\PicpayRequests;
 use App\Models\Donate;
 use App\Models\DonateBonus;
+use App\Libraries\Mob;
+use App\Libraries\Mob7662;
 
 class Dashboard extends BaseController
 {
@@ -104,9 +106,32 @@ class Dashboard extends BaseController
             $donate = new Users();
             $package = new Donate();
             //$this->data['donate_paginate'] = $donate->join('picpay_requests', 'picpay_requests.id_user = mercadopago_requests.id_user')->where(['mercadopago_requests.id_user' => session()->get('login')['id'], 'picpay_requests.id_user' => session()->get('login')['id']])->orderBy('mercadopago_requests.id', 'DESC')->paginate(3, 'donate');
-            $this->data['donate_paginate'] = $donate->join('picpay_requests', 'picpay_requests.id_user = users.id', 'left')->join('mercadopago_requests', 'mercadopago_requests.id_user = users.id', 'left')->where(['users.id' => session()->get('login')['id']])->paginate(3, 'donate');
+            $this->data['donate_paginate'] = $donate->select([
+                'picpay_requests.value as picpay_value',
+                'picpay_requests.status as picpay_status',
+                'picpay_requests.referenceId as picpay_referenceId',
+                'picpay_requests.url_payment as picpay_paymentUrl',
+                'picpay_requests.created_at as picpay_createdAt',
+                'picpay_requests.updated_at as picpay_updatedAt',
+                'mercadopago_requests.value as mercadopago_value',
+                'mercadopago_requests.status as mercadopago_status',
+                'mercadopago_requests.referenceId as mercadopago_referenceId',
+                'mercadopago_requests.url_payment as mercadopago_paymentUrl',
+                'mercadopago_requests.created_at as mercadopago_createdAt',
+                'mercadopago_requests.updated_at as mercadopago_updatedAt'
+                
+            ])->join('picpay_requests', 'picpay_requests.id_user = users.id', 'left')->join('mercadopago_requests', 'mercadopago_requests.id_user = users.id', 'left')->where(['users.id' => session()->get('login')['id']])->orderBy('picpay_requests.id DESC, mercadopago_requests.id DESC')->paginate(3, 'donate');
             $this->data['donate_pager'] = $donate->pager;
             $this->data['package_paginate'] = $package->orderBy('id', 'ASC')->paginate(10, 'package');
+            $bonus = (new DonateBonus())->get()->getResult('array');
+            foreach ($this->data['package_paginate'] as $key => $value) {
+                $this->data['package_paginate'][$key]['donate_bonus'] = [];
+                foreach ($bonus as $key2 => $value2) {
+                    if ($value['id'] == $value2['id_donate']) {
+                        $this->data['package_paginate'][$key]['donate_bonus'][$key2] = $value2;
+                    }
+                }
+            }
             $this->data['package_pager'] = $package->pager;
             return view('dashboard/pages/donation', $this->data);
         } else $this->data['error'] = 'Você precisa estar logado para doar!';

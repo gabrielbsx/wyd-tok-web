@@ -31,7 +31,7 @@
                         <?php if (session()->get('login')['access'] == 3) : ?>
                             <a class="block bg-gray-900 hover:bg-gray-800 px-3 py-2" href="<?= base_url('admin/config') ?>">Configurações</a>
                             <a class="block bg-gray-900 hover:bg-gray-800 px-3 py-2" href="<?= base_url('admin/news') ?>">Notícias</a>
-                            <a class="block bg-gray-900 hover:bg-gray-800 px-3 py-2" href="<?= base_url('admin/donate') ?>">Doação</a>
+                            <a class="block bg-gray-900 hover:bg-gray-800 px-3 py-2" href="<?= base_url('admin/donate') ?>">Pacotes de Donate</a>
                         <?php endif; ?>
                         <a class="block hover:bg-gray-800 px-3 py-2" href="<?= base_url('dashboard/tickets') ?>">Suporte</a>
                         <a class="block hover:bg-gray-800 px-3 py-2" href="<?= base_url('dashboard/alterpass') ?>">Alterar senha</a>

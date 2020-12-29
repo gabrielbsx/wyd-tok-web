@@ -12,20 +12,19 @@
             <?php if ($paginate_package) : ?>
                 <?php foreach ($paginate_package as $key => $value) : ?>
                     <div class="col-span-4 grid grid-cols-8 my-2 px-1 py-4 px-6 bg-gray-800 border-b-4 border-gray-900 text-gray-300 rounded-lg bg-black">
-                        <div class="col-span-5 px-1 py-2">
+                        <div class="col-span-3 px-1 py-2">
                             <span class="text-left"><?= $value['name'] ?></span>
                         </div>
                         <div class="col-span-1 px-1 py-2">
                             <span class="text-left">
-                                <?php if ($value['updated_at']) : ?>
-                                    <?= $value['updated_at'] ?>
-                                <?php else : ?>
-                                    <?= $value['created_at'] ?>
-                                <?php endif; ?>
+                                <?= $value['updated_at'] ?? $value['created_at'] ?>
                             </span>
                         </div>
-                        <div class="col-span-2 text-right">
-                            <div class="grid grid-cols-2 text-center">
+                        <div class="col-span-4 text-right">
+                            <div class="grid grid-cols-3 text-center">
+                                <a href="<?= base_url('admin/additem/' . $value['id']) ?>" class="bg-green-700 hover:bg-green-600 hover:border-green-800 col-span-1 px-12 mr-2 py-2 rounded-lg border-b-4 border-green-900">
+                                    Adicionar Item
+                                </a>
                                 <a href="<?= base_url('admin/editpackage/' . $value['id']) ?>" class="bg-blue-700 hover:bg-blue-600 hover:border-blue-800 col-span-1 px-12 mr-2 py-2 rounded-lg border-b-4 border-blue-900">
                                     Editar
                                 </a>
@@ -36,6 +35,9 @@
                         </div>
                     </div>
                 <?php endforeach; ?>
+                <?php if ($pager_package) : ?>
+                    <?= $pager_package->links('package', 'pagination') ?>
+                <?php endif; ?>
             <?php else : ?>
                 <div class="col-span-4 px-1 text-center">
                     <p class="py-4 px-6 bg-gray-900 border-b-4 border-gray-800 text-gray-300 rounded bg-black">

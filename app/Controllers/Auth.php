@@ -15,6 +15,11 @@ use App\Models\Donate;
 use App\Models\DonateBonus;
 use Exception;
 use MercadoPago;
+use Picpay\Payment;
+use Picpay\Buyer;
+use Picpay\Seller;
+use Picpay\Request\PaymentRequest;
+use Picpay\Exception\RequestException;
 
 class Auth extends BaseController
 {
@@ -227,7 +232,7 @@ class Auth extends BaseController
         $this->data['error'] = 'Você precisa estar logado para enviar guildmark!';
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
     }
-    
+
     public function mob()
     {
         if (session()->has('login')) {
@@ -318,7 +323,7 @@ class Auth extends BaseController
         }
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
     }
-    
+
     public function createnews()
     {
         if (session()->has('login')) {
@@ -581,6 +586,113 @@ class Auth extends BaseController
             }
             return redirect()->to(base_url('dashboard/picpay'))->with($this->rettype, $this->data);
         } else $this->data['error'] = 'Você precisa estar logado para doar!';
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+
+    public function purchasemp()
+    {
+    }
+
+    public function purchasepic($id = null)
+    {
+        if (session()->has('login')) {
+            if ($id > 0) {
+                $package = new Donate();
+                $packet = $package->where(['id' => $id])->first();
+                if ($packet) {
+                    $config = (new Configuration())->select(['picpay_token', 'picpay_seller'])->first();
+                    srand(5);
+                    $index = (string) (time() . rand());
+                    $seller = new Seller($config['picpay_token'], $config['picpay_seller']);
+                    $buyer = new Buyer('Gabriel', 'Silva', '461.905.698-70', 'gabrielturing@gmail.com', '+55 11 96354-3075');
+                    $payment = new Payment($index, base_url('auth/picpay'), $packet['value'], $buyer, base_url('dashboard/donation'));
+                    try {
+                        $paymentRequest = new PaymentRequest($seller, $payment);
+                        $paymentResponse = $paymentRequest->execute();
+                        $donate = new PicpayRequests();
+                        $donation = [
+                            'referenceId' => $index,
+                            'email' => session()->get('login')['email'],
+                            'value' => $packet['value'],
+                            'status' => 0,
+                            'id_user' => session()->get('login')['id'],
+                            'url_payment' => $paymentResponse->paymentUrl
+                        ];
+                        if ($donate->save($donation)) {
+                            $this->data['success'] = 'Fatura gerada com sucesso!';
+                        }
+                    } catch (RequestException $e) {
+                        $this->data['error'] = 'Não foi possível gerar a fatura!';
+                        $errorMessage = $e->getMessage();
+                        $statusCode = $e->getCode();
+                        $errors = $e->getErrors();
+                    }        
+                } else $this->data['error'] = 'Pacote inexistente!';
+            } else $this->data['error'] = 'Pacote inexistente!';
+            return redirect()->to(base_url('dashboard/donation'))->with($this->rettype, $this->data);
+        }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+
+    public function additem()
+    {
+        if (session()->has('login')) {
+            if (session()->get('login')['access'] == 3) {
+                if ($this->request->getMethod(true) == 'POST') {
+                    if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
+                        $bonus = new DonateBonus();
+                        if ((new Donate())->where(['id' => $this->request->getPost('id_donate')])->first()) {
+                            if ($bonus->save($this->request->getPost())) {
+                                $this->data['success'] = 'Item adicionado com sucesso ao pacote!';
+                            } else $this->data['error'] = 'Não foi possível adicionar item ao pacote!';
+                        } else $this->data['error'] = 'Pacote inexistente!';   
+                    } else $this->data['error'] = 'Recaptcha inválido!';
+                } else $this->data['error'] = 'Requisição inválida!';
+                return redirect()->to(base_url('admin/donate'))->with($this->rettype, $this->data);
+            }
+        }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+
+    public function edititem()
+    {
+        if (session()->has('login')) {
+            if (session()->get('login')['access'] == 3) {
+                $ret = 'donate';
+                if ($this->request->getMethod(true) == 'POST') {
+                    if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
+                        $bonus = new DonateBonus();
+                        $id = $this->request->getPost('id');
+                        if ($id > 0) {
+                            $ret = 'edititem/' . $id;
+                            $data = $this->request->getPost();
+                            if ($bonus->update($id, $data)) {
+                                $this->data['success'] = 'Item alterado com sucesso do pacote!';
+                            } else $this->data['error'] = implode("<div class=\"grid mt-5\"></div>", $bonus->errors());
+                        } else $this->data['error'] = 'Item inválido';
+                    } else $this->data['error'] = 'Recaptcha inválido';
+                } else $this->data['error'] = 'Requisição inválida';
+                return redirect()->to(base_url('admin/' . $ret))->with($this->rettype, $this->data);
+            }
+        }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+
+    public function delitem($id = null)
+    {
+        if (session()->has('login')) {
+            if (session()->get('login')['access'] == 3) {
+                if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
+                    if ($id > 0) {
+                        $bonus = new DonateBonus();
+                        if ($bonus->where('id', $id)->delete()) {
+                            $this->data['success'] = 'Item deletado com sucesso do pacote!';
+                        } else $this->data['error'] = 'Não foi possível deletar o item do pacote!';
+                    } else $this->data['error'] = 'Item inválida!';
+                } else $this->data['error'] = 'Recaptcha inválido!';
+                return redirect()->to(base_url('admin/donate'))->with($this->rettype, $this->data);
+            }
+        }
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
     }
 

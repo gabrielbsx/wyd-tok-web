@@ -31,6 +31,41 @@
                         Voltar
                     </a>
                 </div>
+                <div class="text-white grid grid-cols-4 bg-gray-900 py-4 mb-3 px-3 rounded-b-lg -my-2">
+                    <?php if ($paginate_bonus) : ?>
+                        <?php foreach ($paginate_bonus as $key => $value) : ?>
+                            <div class="col-span-4 grid grid-cols-8 my-1 px-1 py-4 px-6 bg-gray-800 border-b-4 border-gray-900 text-gray-300 rounded-lg bg-black">
+                                <div class="col-span-3 px-1 py-2">
+                                    <span class="text-left">
+                                        <span class="text-left">
+                                            <?= $value['itemname'] ?>
+                                        </span>
+                                    </span>
+                                </div>
+                                <div class="col-span-2 px-1 py-2">
+                                    <span class="text-left">
+                                        <?= $value['itemcode'] ?>
+                                    </span> 
+                                </div>
+                                <div class="col-span-3 py-2 text-right">
+                                    <a href="<?= base_url('admin/edititem/' . $value['id']) ?>" class="col-span-1 px-12 mr-2 py-2 rounded-lg border-b-4 bg-green-700 hover:bg-green-600 hover:border-green-800 border-green-900">
+                                        Alterar item
+                                    </a>
+                                    <a href="<?= base_url('auth/delitem/' . $value['id']) ?>" class="col-span-1 px-12 py-2 rounded-lg border-b-4 bg-red-700 hover:bg-red-600 hover:border-red-800 border-red-900">
+                                        Deletar item
+                                    </a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                        <?php if ($pager_bonus) : ?>
+                            <?= $pager_bonus->links('bonus', 'pagination') ?>
+                        <?php endif; ?>
+                    <?php else : ?>
+                        <div class="text-center col-span-8">
+                            Não há bônus neste pacote
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
         </form>
     <?php else : ?>
