@@ -465,132 +465,55 @@ class Auth extends BaseController
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
     }
 
-    public function donation()
+    public function purchasemp($id = null)
     {
         if (session()->has('login')) {
-            if ($this->request->getMethod(true) == 'POST') {
-                if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
-                    if (is_numeric($this->request->getPost('value')) && $this->request->getPost('value') > 0) {
-                        if ($this->request->getPost('method') == 1) { //mercadopago
-                            try {
-                                $mercadopago = new MercadopagoRequests();
-                                $amount = intval($this->request->getPost('value'));
-                                $mp = (new Configuration())->select(['mercadopago_key', 'mercadopago_token', 'title'])->first();
-                                #MercadoPago\SDK::setClientId($mp['mercadopago_key']);
-                                #MercadoPago\SDK::setClientSecret($mp['mercadopago_token']);
-                                #MercadoPago\SDK::setPublicKey($mp['mercadopago_key']);
-                                MercadoPago\SDK::setAccessToken($mp['mercadopago_token']);
-                                $preference = new MercadoPago\Preference();
-                                $item = new MercadoPago\Item();
-                                srand(5);
-                                $id = (string) (time() . rand());
-                                $item->id = $id;
-                                $item->title = $mp['title'] . ' - ' . $amount . ' donate';
-                                $item->quantity = 1;
-                                $item->unit_price = (int) $amount;
-                                $preference->items = array($item);
-                                $preference->external_reference = $id;
-                                $preference->notification_url = base_url('/donate/mercadopago');
-                                $preference->back_urls = [
-                                    'success' => base_url('dashboard/donation?back=success'),
-                                    'pending' => base_url('dashboard/donation?back=pending'),
-                                    'failure' => base_url('dashboard/donation?back=failure'),
-                                ];
-                                $preference->save();
-                                $row = [
-                                    'referenceId' => $id,
-                                    'referenceIdBox' => $preference->id,
-                                    'value' => $amount,
-                                    'status' => 0,
-                                    'id_user' => session()->get('login')['id'],
-                                    'url_payment' => $preference->init_point,
-                                ];
-                                if ($mercadopago->save($row)) {
-                                    $this->data['paymentUrl'] = $preference->init_point;
-                                    $this->data['success'] = 'Doação gerada com sucesso!';
-                                } else $this->data['error'] = 'Não foi possível gerar uma doação!';
-                            } catch (Exception $e) {
-                                return var_dump($e);
-                                $this->data['error'] = 'Houve algum erro ao criar a doação!';
-                            }
-                        } elseif ($this->request->getPost('method') == 2) { //picpay
-                            try {
-                                $amount = intval($this->request->getPost('value'));
-                                $picpay = new PicpayRequests();
-                                $pic = (new Configuration())->select(['picpay_token', 'picpay_seller'])->first();
-                                srand(5);
-                                $id = (string) (time() . rand());
-                                $postdata = [
-                                    'referenceId' => $id,
-                                    'firstname' => 'Batista',
-                                    'lastname' => 'Silva',
-                                    'document' => '441.235.180-21',
-                                    'email' => 'gabrielturing@gmail.com',
-                                    'phone' => '11 12345-1234',
-                                    'value' => $amount,
-                                    'status' => '0',
-                                    'id_user' => session()->get('login')['id']
-                                ];
-                                if ($picpay->save($postdata)) {
-                                    $ch = curl_init();
-                                    curl_setopt_array($ch, [
-                                        CURLOPT_URL => 'https://appws.picpay.com/ecommerce/public/payments',
-                                        CURLOPT_RETURNTRANSFER => true,
-                                        CURLOPT_POST => true,
-                                        CURLOPT_SSL_VERIFYPEER => false,
-                                        CURLOPT_HTTPHEADER => [
-                                            'Content-Type: application/json',
-                                            'X-Picpay-Token: ' . $pic['picpay_token'],
-                                        ],
-                                        CURLOPT_POSTFIELDS => json_encode(
-                                            [
-                                                'referenceId' => $id,
-                                                'callbackurl' => base_url('/donate/picpay'),
-                                                'returnUrl' => base_url('dashboard/donation'),
-                                                'value' => $amount,
-                                                'expiresAt' => date('c', strtotime('+3 days')),
-                                                'buyer' => [
-                                                    'document' => $postdata['document'],
-                                                ],
-                                            ],
-                                        ),
-                                    ]);
-                                    $ret = curl_exec($ch);
-                                    curl_close($ch);
-                                    if (json_decode($ret)) {
-                                        $url = json_decode($ret, true);
-                                        $picpay->set('url_payment', $url['qrcode']['content'])->where('referenceId', $id)->update();
-                                        $this->data['success'] = 'Doação gerada com sucesso!';
-                                    } else {
-                                        $this->data['error'] = 'Não foi possível gerar a doação!';
-                                    }
-                                } else $this->data['error'] = 'Não foi posssível gerar a doação!';
-                            } catch (Exception $e) {
-                                $this->data['error'] = 'Houve algum erro ao criar a doação!';
-                            }
-                        } else $this->data['error'] = 'Requisição inválida!';
-                    } else $this->data['error'] = 'Valor apenas numérico!';
-                } else $this->data['error'] = 'Recaptcha inválido!';
-            } else $this->data['error'] = 'Requisição inválida!';
+            if ($id > 0) {
+                $package = new Donate();
+                $packet = $package->where(['id' => $id])->first();
+                if ($packet) {
+                    srand(5);
+                    $index = (string) (time() . rand());
+                    $mercadopago = new MercadopagoRequests();
+                    $mp = (new Configuration())->select(['mercadopago_key', 'mercadopago_token', 'title'])->first();
+                    #MercadoPago\SDK::setClientId($mp['mercadopago_key']);
+                    #MercadoPago\SDK::setClientSecret($mp['mercadopago_token']);
+                    #MercadoPago\SDK::setPublicKey($mp['mercadopago_key']);
+                    MercadoPago\SDK::setAccessToken($mp['mercadopago_token']);
+                    $preference = new MercadoPago\Preference();
+                    $item = new MercadoPago\Item();
+                    srand(5);
+                    $id = (string) (time() . rand());
+                    $item->id = $id;
+                    $item->title = $mp['title'] . ' - ' . $packet['value'] . ' donate';
+                    $item->quantity = 1;
+                    $item->unit_price = (int) $packet['value'];
+                    $preference->items = array($item);
+                    $preference->external_reference = $id;
+                    $preference->notification_url = base_url('/donate/mercadopago');
+                    $preference->back_urls = [
+                        'success' => base_url('dashboard/donation?back=success'),
+                        'pending' => base_url('dashboard/donation?back=pending'),
+                        'failure' => base_url('dashboard/donation?back=failure'),
+                    ];
+                    $preference->save();
+                    $row = [
+                        'referenceId' => $id,
+                        'referenceIdBox' => $preference->id,
+                        'value' => $packet['value'],
+                        'status' => 0,
+                        'id_user' => session()->get('login')['id'],
+                        'url_payment' => $preference->init_point,
+                    ];
+                    if ($mercadopago->save($row)) {
+                        $this->data['paymentUrl'] = $preference->init_point;
+                        $this->data['success'] = 'Doação gerada com sucesso!';
+                    } else $this->data['error'] = 'Não foi possível gerar uma doação!';
+                } else $this->data['error'] = 'Pacote inexistente!';
+            } else $this->data['error'] = 'Pacote inexistente!';
             return redirect()->to(base_url('dashboard/donation'))->with($this->rettype, $this->data);
-        } else $this->data['error'] = 'Você precisa estar logado para gerar uma doação!';
+        }
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
-    }
-
-    public function picpay()
-    {
-        if (session()->has('login')) {
-            if ($this->request->getMethod(true) == 'POST') {
-                if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
-                } else $this->data['error'] = 'Recaptcha inválido!';
-            }
-            return redirect()->to(base_url('dashboard/picpay'))->with($this->rettype, $this->data);
-        } else $this->data['error'] = 'Você precisa estar logado para doar!';
-        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
-    }
-
-    public function purchasemp()
-    {
     }
 
     public function purchasepic($id = null)
@@ -619,14 +542,14 @@ class Auth extends BaseController
                             'url_payment' => $paymentResponse->paymentUrl
                         ];
                         if ($donate->save($donation)) {
-                            $this->data['success'] = 'Fatura gerada com sucesso!';
+                            $this->data['success'] = 'Doação gerada com sucesso!';
                         }
                     } catch (RequestException $e) {
-                        $this->data['error'] = 'Não foi possível gerar a fatura!';
+                        $this->data['error'] = 'Não foi possível gerar a doação!';
                         $errorMessage = $e->getMessage();
                         $statusCode = $e->getCode();
                         $errors = $e->getErrors();
-                    }        
+                    }
                 } else $this->data['error'] = 'Pacote inexistente!';
             } else $this->data['error'] = 'Pacote inexistente!';
             return redirect()->to(base_url('dashboard/donation'))->with($this->rettype, $this->data);
@@ -642,10 +565,10 @@ class Auth extends BaseController
                     if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
                         $bonus = new DonateBonus();
                         if ((new Donate())->where(['id' => $this->request->getPost('id_donate')])->first()) {
-                            if ($bonus->save($this->request->getPost())) {
+                            if ($bonus->save(array_filter($this->request->getPost()))) {
                                 $this->data['success'] = 'Item adicionado com sucesso ao pacote!';
-                            } else $this->data['error'] = 'Não foi possível adicionar item ao pacote!';
-                        } else $this->data['error'] = 'Pacote inexistente!';   
+                            } else $this->data['error'] = implode("<div class=\"grid mt-5\"></div>", $bonus->errors());
+                        } else $this->data['error'] = 'Pacote inexistente!';
                     } else $this->data['error'] = 'Recaptcha inválido!';
                 } else $this->data['error'] = 'Requisição inválida!';
                 return redirect()->to(base_url('admin/donate'))->with($this->rettype, $this->data);
@@ -716,7 +639,7 @@ class Auth extends BaseController
                         }
                     } else $this->data['error'] = 'Recaptcha inválido!';
                 } else $this->data['error'] = 'Requisição inválida!';
-                return redirect()->to(base_url('dashboard/config'))->with($this->rettype, $this->data);
+                return redirect()->to(base_url('admin/config'))->with($this->rettype, $this->data);
             }
         }
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
