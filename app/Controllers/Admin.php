@@ -23,6 +23,10 @@ class Admin extends BaseController
             if (session()->get('login')['access'] == 3) {
                 $config = new Configuration();
                 $this->data['configuration'] = $config->first();
+                if ($this->data['configuration'] == null) {
+                    $config->save(['title' => '']);
+                    $this->data['configuration'] = $config->first();
+                }
                 return view('dashboard/pages/admin/configuration', $this->data);
             }
         }
