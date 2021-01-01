@@ -106,7 +106,7 @@ class Dashboard extends BaseController
             $donate = new Users();
             $package = new Donate();
             //$this->data['donate_paginate'] = $donate->join('picpay_requests', 'picpay_requests.id_user = mercadopago_requests.id_user')->where(['mercadopago_requests.id_user' => session()->get('login')['id'], 'picpay_requests.id_user' => session()->get('login')['id']])->orderBy('mercadopago_requests.id', 'DESC')->paginate(3, 'donate');
-            $this->data['donate_paginate'] = $donate->select([
+            /*$this->data['donate_paginate'] = $donate->select([
                 'picpay_requests.value as picpay_value',
                 'picpay_requests.status as picpay_status',
                 'picpay_requests.referenceId as picpay_referenceId',
@@ -120,7 +120,25 @@ class Dashboard extends BaseController
                 'mercadopago_requests.created_at as mercadopago_createdAt',
                 'mercadopago_requests.updated_at as mercadopago_updatedAt'
                 
-            ])->join('picpay_requests', 'picpay_requests.id_user = users.id', 'left')->join('mercadopago_requests', 'mercadopago_requests.id_user = users.id', 'left')->where(['users.id' => session()->get('login')['id']])->orderBy('picpay_requests.id DESC, mercadopago_requests.id DESC')->paginate(3, 'donate');
+            ])->join('picpay_requests', 'picpay_requests.id_user = users.id')->join('mercadopago_requests', 'mercadopago_requests.id_user = users.id')->where(['users.id' => session()->get('login')['id']])->orderBy('picpay_requests.id DESC, mercadopago_requests.id DESC')->paginate(3, 'donate');
+            */
+            $pic = $donate->select([
+                'picpay_requests.value as value',
+                'picpay_requests.status as status',
+                'picpay_requests.referenceId as referenceId',
+                'picpay_requests.url_payment as paymentUrl',
+                'picpay_requests.created_at as createdAt',
+                'picpay_requests.updated_at as updatedAt'
+            ])->join('picpay_requests', 'picpay_requests.id_user = users.id')->where(['users.id' => session()->get('login')['id']])->orderBy('picpay_requests.id DESC')->paginate(3, 'donate');
+            $mp = $donate->select([
+                'mercadopago_requests.value as value',
+                'mercadopago_requests.status as status',
+                'mercadopago_requests.referenceId as referenceId',
+                'mercadopago_requests.url_payment as paymentUrl',
+                'mercadopago_requests.created_at as createdAt',
+                'mercadopago_requests.updated_at as updatedAt'  
+            ])->join('mercadopago_requests', 'mercadopago_requests.id_user = users.id')->where(['users.id' => session()->get('login')['id']])->orderBy('mercadopago_requests.id DESC')->paginate(3, 'donate');
+            $this->data['donate_paginate'] = array_merge($pic, $mp);
             $this->data['donate_pager'] = $donate->pager;
             $this->data['package_paginate'] = $package->orderBy('id', 'ASC')->paginate(10, 'package');
             $bonus = (new DonateBonus())->get()->getResult('array');
