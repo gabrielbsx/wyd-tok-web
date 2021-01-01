@@ -44,8 +44,8 @@
                                 </div>
                                 <div class="col-span-2 px-1 py-2">
                                     <span class="text-left">
-                                        <?= $value['itemcode'] ?>
-                                    </span> 
+                                        <?= trim($value['itemid'] . ' ' . $value['effect1'] . ' ' . $value['effect_value1'] . ' ' . $value['effect2'] . ' ' . $value['effect_value2'] . ' ' . $value['effect3'] . ' ' . $value['effect_value3']) ?>
+                                    </span>
                                 </div>
                                 <div class="col-span-3 py-2 text-right">
                                     <a href="<?= base_url('admin/edititem/' . $value['id']) ?>" class="col-span-1 px-12 mr-2 py-2 rounded-lg border-b-4 bg-green-700 hover:bg-green-600 hover:border-green-800 border-green-900">
