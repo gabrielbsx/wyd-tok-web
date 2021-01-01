@@ -12,7 +12,7 @@ class DonateBonus extends Model
 
     protected $returnType = 'array';
 
-    protected $allowedFields = ['id_donate', 'itemcode', 'itemname'];
+    protected $allowedFields = ['id_donate', 'itemid', 'effect1', 'effect_value1', 'effect2', 'effect_value2', 'effect3', 'effect_value3', 'itemname'];
     protected $useTimestamps = false;
     protected $createdFields = 'created_at';
     protected $updatedFields = 'updated_at';
@@ -20,7 +20,14 @@ class DonateBonus extends Model
 
     protected $validationRules = [
         'id_donate' => 'required|is_natural_no_zero',
-        'itemcode' => 'required|regex_match[/^[0-9\ ]+$/]',
+        //'itemcode' => 'required|regex_match[/^[0-9\ ]+$/]',
+        'itemid' => 'required|is_natural_no_zero',
+        /*'effect1' => 'is_natural',
+        'effect_value1' => 'is_natural',
+        'effect2' => 'is_natural',
+        'effect_value2' => 'is_natural',
+        'effect3' => 'is_natural',
+        'effect_value3' => 'is_natural',*/
         'itemname' => 'required|max_length[50]'
     ];
 
@@ -29,10 +36,32 @@ class DonateBonus extends Model
             'required' => 'Referência de donate obrigatório!',
             'is_natural_no_zero' => 'Apenas números inteiros acima de zero!'
         ],
-        'itemcode' => [
+        /*'itemcode' => [
             'required' => 'Não foi possível encerrar o ticket!',
             'regex_match' => 'Código do item está inválido!'
+        ],*/
+        'itemid' => [
+            'required' => 'ID do item obrigatório',
+            'is_natural_no_zero' => 'Apenas valores numéricos naturais acima de zero'
         ],
+        /*'effect1' => [
+            'is_natural' => 'Apenas valores numéricos naturais'
+        ],
+        'effect_value1' => [
+            'is_natural' => 'Apenas valores numéricos naturais'
+        ],
+        'effect2' => [
+            'is_natural' => 'Apenas valores numéricos naturais'
+        ],
+        'effect_value2' => [
+            'is_natural' => 'Apenas valores numéricos naturais'
+        ],
+        'effect3' => [
+            'is_natural' => 'Apenas valores numéricos naturais'
+        ],
+        'effect_value3' => [
+            'is_natural' => 'Apenas valores numéricos naturais'
+        ],*/
         'itemname' => [
             'required' => 'Nome do item é obrigatório!',
             'max_length' => 'Apenas 50 caracteres para o nome do item'

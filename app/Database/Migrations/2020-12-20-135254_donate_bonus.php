@@ -16,9 +16,40 @@ class DonateBonus extends Migration
 				'type' => 'INT',
 				'unsigned' => true
 			],
-			'itemcode' => [
-				'type' => 'VARCHAR',
-				'constraint' => '50'
+			'itemid' => [
+				'type' => 'INT',
+				'constraint' => '4',
+				'unsigned' => true
+			],
+			'effect1' => [
+				'type' => 'INT',
+				'constraint' => '4',
+				'unsigned' => true
+			],
+			'effect_value1' => [
+				'type' => 'INT',
+				'constraint' => '4',
+				'unsigned' => true
+			],
+			'effect2' => [
+				'type' => 'INT',
+				'constraint' => '4',
+				'unsigned' => true
+			],
+			'effect_value2' => [
+				'type' => 'INT',
+				'constraint' => '4',
+				'unsigned' => true
+			],
+			'effect3' => [
+				'type' => 'INT',
+				'constraint' => '4',
+				'unsigned' => true
+			],
+			'effect_value3' => [
+				'type' => 'INT',
+				'constraint' => '4',
+				'unsigned' => true
 			],
 			'itemname' => [
 				'type' => 'VARCHAR',
