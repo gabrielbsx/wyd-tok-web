@@ -17,7 +17,28 @@
                 <span><?= date('H:m:i', time() + time()) ?></span>
             </a>
         </div>
-        <div class="lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start flex flex-col lg:h-auto">
+        <?php if (session()->has('login')) : ?>
+            <?php if (session()->get('login')['access'] == 3) : ?>
+                <div class="lg:inline-flex lg:flex-row lg:w-auto w-full lg:items-center items-start flex flex-col lg:h-auto">
+                    <div x-data="{ show: false }" @click.away="show = false">
+                        <button @click="show = ! show" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
+                            <span>Administração</span>
+                            <svg class="fill-current text-gray-200" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                                <path d="M7 10l5 5 5-5z" />
+                                <path d="M0 0h24v24H0z" fill="none" />
+                            </svg>
+                        </button>
+                        <div x-show="show" class="absolute text-white rounded-b-lg bg-black shadow-md" style="min-width:10rem;z-index:999;">
+                            <a class="block bg-gray-600 hover:bg-gray-700 px-3 py-2" href="<?= base_url('admin/config') ?>">Configurações</a>
+                            <a class="block bg-gray-600 hover:bg-gray-700 px-3 py-2" href="<?= base_url('admin/news') ?>">Notícias</a>
+                            <a class="block bg-gray-600 hover:bg-gray-700 px-3 py-2" href="<?= base_url('admin/donate') ?>">Pacotes de Donate</a>
+                            <a class="block bg-gray-600 hover:bg-gray-700 px-3 py-2" href="<?= base_url('admin/guides') ?>">Guia do jogo</a>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+        <div class="lg:inline-flex lg:flex-row lg:w-auto w-full lg:items-center items-start flex flex-col lg:h-auto">
             <?php if (session()->has('login')) : ?>
                 <div class="mr-12" x-data="{ show: false }" @click.away="show = false">
                     <button @click="show = ! show" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
@@ -28,11 +49,6 @@
                         </svg>
                     </button>
                     <div x-show="show" class="absolute text-white rounded-b-lg bg-black shadow-md" style="min-width:10rem;z-index:999;">
-                        <?php if (session()->get('login')['access'] == 3) : ?>
-                            <a class="block bg-gray-900 hover:bg-gray-800 px-3 py-2" href="<?= base_url('admin/config') ?>">Configurações</a>
-                            <a class="block bg-gray-900 hover:bg-gray-800 px-3 py-2" href="<?= base_url('admin/news') ?>">Notícias</a>
-                            <a class="block bg-gray-900 hover:bg-gray-800 px-3 py-2" href="<?= base_url('admin/donate') ?>">Pacotes de Donate</a>
-                        <?php endif; ?>
                         <a class="block hover:bg-gray-800 px-3 py-2" href="<?= base_url('dashboard/tickets') ?>">Suporte</a>
                         <a class="block hover:bg-gray-800 px-3 py-2" href="<?= base_url('dashboard/alterpass') ?>">Alterar senha</a>
                         <a class="block hover:bg-gray-800 px-3 py-2" href="<?= base_url('dashboard/numericpass') ?>">Recuperar numérica</a>

@@ -13,6 +13,8 @@ use App\Models\MercadopagoPincode;
 use App\Models\PicpayRequests;
 use App\Models\Donate;
 use App\Models\DonateBonus;
+use App\Models\Guides;
+use App\Models\GuideArticle;
 use Exception;
 use MercadoPago;
 use Picpay\Payment;
@@ -30,8 +32,9 @@ class Auth extends BaseController
                 if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
                     $username = $this->request->getPost('username');
                     $password = $this->request->getPost('password');
-                    $acc = $this->ingame . $this->dbsrv . 'account/' . $this->initial($username) . '/' . $username;
-                    if (file_exists($acc)) {
+                    $request = ['username' => $username];
+                    $ret = $this->vps('login', $request);
+                    if ($ret->status == 'success') {
                         $user = new Users();
                         $account = $user->where('username', $username)->first();
                         if ($account) {
@@ -57,25 +60,14 @@ class Auth extends BaseController
                     if ($user->save($this->request->getPost())) {
                         $username = $this->request->getPost('username');
                         $password = $this->request->getPost('password');
-                        $acc = $this->ingame . $this->dbsrv . 'account/' . $this->initial($username) . '/' . $username;
-                        if (!file_exists($acc)) {
-                            $fpb = fopen($this->accbase, 'rb');
-                            $base = fread($fpb, filesize($this->accbase));
-                            $userid = substr($base, 0, strlen($username));
-                            $passid = substr($base, 16, strlen($password));
-                            $base = str_replace($userid, $username, $base);
-                            $base = str_replace($passid, $password, $base);
-                            $fp = fopen($acc, 'w');
-                            $ret = fwrite($fp, $base);
-                            fclose($fpb);
-                            fclose($fp);
-                            if ($ret) {
-                                $this->data['success'] = 'Conta criada com sucesso!';
-                            } else {
-                                $user->where('username', $username)->delete();
-                                $this->data['error'] = 'Não foi possível inserir a conta ao game!';
-                            }
-                        } else $this->data['error'] = 'Usuário existente!';
+                        $request = ['username' => $username, 'password' => $password];
+                        $ret = $this->vps('register', $request);
+                        if ($ret->status == 'success') {
+                            $this->data['success'] = 'Conta criada com sucesso!';
+                        } else {
+                            $user->where('username', $username)->delete();
+                            $this->data['error'] = 'Não foi possível cadastrar!';
+                        }
                     } else $this->data['error'] = implode("<div class=\"grid mt-5\"></div>", $user->errors());
                 } else $this->data['error'] = 'Recaptcha inválido!';
             } else $this->data['error'] = 'Requisição inválida!';
@@ -97,18 +89,10 @@ class Auth extends BaseController
                     if ($validation->run($this->request->getPost())) {
                         if (password_verify($this->request->getPost('oldpassword'), session()->get('login')['password'])) {
                             $username = session()->get('login')['username'];
-                            $acc = $this->ingame . $this->dbsrv . 'account/' . $this->initial($username) . '/' . $username;
-                            $fp = fopen($acc, 'rb');
-                            $account = fread($fp, filesize($acc));
                             $password = $this->request->getPost('password');
-                            for ($i = 0; $i < strlen($password); $i++)
-                                $account[(16 + $i)] = $password[$i];
-                            $account[(16 + strlen($password))] = hex2bin('00');
-                            fclose($fp);
-                            $fp = fopen($acc, 'w');
-                            $ret = fwrite($fp, $account);
-                            fclose($fp);
-                            if ($ret) {
+                            $request = ['username' => $username, 'password' => $password];
+                            $ret = $this->vps('alterpass', $request);
+                            if ($ret->status == 'success') {
                                 $user = new Users();
                                 if ($user->whereIn('username', [session()->get('login')['username']])->set(['password' => $password])->update()) {
                                     $this->data['success'] = 'Senha alterada com sucesso!';
@@ -132,22 +116,24 @@ class Auth extends BaseController
             if ($this->request->getMethod(true) === 'POST') {
                 if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
                     $username = session()->get('login')['username'];
-                    $path = $this->ingame . $this->dbsrv . 'account/' . $this->initial($username) . '/' . $username;
-                    $mob = new Mob();
-                    $mob->read($path);
-                    $read = $mob->account_primary;
-                    $user = $read['account'];
-                    $pass = explode(hex2bin('00'), $read['password'])[0];
-                    $numeric = strlen($read['numeric']) ? $read['numeric'] : 'Senha numérica não definida!';
-                    $text = "Usuário: $user\nSenha: $pass\nNumérica: $numeric\n________________________________\n";
-                    $sender = \Config\Services::email();
-                    $sender->setFrom('gabrielturing@gmail.com', 'Gabriel Silva');
-                    $sender->setTo(session()->get('login')['email']);
-                    $sender->setSubject('Recuperação de conta - Tail of Dark');
-                    $sender->setMessage($text);
-                    if ($sender->send()) {
-                        $this->data['success'] = 'Recuperação da numérica enviado ao email vinculado a conta!';
-                    } else $this->data['error'] = 'Não foi possível enviar o email!';
+                    $ret = $this->vps('account', ['username' => $username]);
+                    if ($ret->status == 'success') {
+                        $mob = new Mob();
+                        $mob->read($ret->account);
+                        $read = $mob->account_primary;
+                        $user = $read['account'];
+                        $pass = explode(hex2bin('00'), $read['password'])[0];
+                        $numeric = strlen($read['numeric']) ? $read['numeric'] : 'Senha numérica não definida!';
+                        $text = "Usuário: $user\nSenha: $pass\nNumérica: $numeric\n________________________________\n";
+                        $sender = \Config\Services::email();
+                        $sender->setFrom('teste@gmail.com', 'TOK');
+                        $sender->setTo(session()->get('login')['email']);
+                        $sender->setSubject('Recuperação de conta - Tail of Dark');
+                        $sender->setMessage($text);
+                        if ($sender->send()) {
+                            $this->data['success'] = 'Recuperação da numérica enviado ao email vinculado a conta!';
+                        } else $this->data['error'] = 'Não foi possível enviar o email!';
+                    } else $this->data['error'] = 'Não foi possível recuperar a senha numérica!';
                 } else $this->data['error'] = 'Recaptcha inválido!';
             } else $this->data['error'] = 'Requisição inválida!';
             return redirect()->to(base_url('dashboard/numericpass'))->with($this->rettype, $this->data);
@@ -173,17 +159,19 @@ class Auth extends BaseController
                         if (count($accounts) > 0) {
                             foreach ($accounts as $key => $value) {
                                 $username = $value['username'];
-                                $acc = $this->ingame . $this->dbsrv . 'account/' . $this->initial($username) . '/' . $username;
-                                $mob = new Mob();
-                                $mob->read($acc);
-                                $read = $mob->account_primary;
-                                $user = $read['account'];
-                                $pass = explode(hex2bin('00'), $read['password'])[0];
-                                $numeric = strlen($read['numeric']) ? $read['numeric'] : 'Senha numérica não definida!';
-                                $text .= "Usuário: $user\nSenha: $pass\nNumérica: $numeric\n________________________________\n";
+                                $data = $this->vps('account', ['username' => $username]);
+                                if ($data->status == 'success') {
+                                    $mob = new Mob();
+                                    $mob->read($data->account);
+                                    $read = $mob->account_primary;
+                                    $user = $read['account'];
+                                    $pass = explode(hex2bin('00'), $read['password'])[0];
+                                    $numeric = strlen($read['numeric']) ? $read['numeric'] : 'Senha numérica não definida!';
+                                    $text .= "Usuário: $user\nSenha: $pass\nNumérica: $numeric\n________________________________\n";
+                                } else continue;
                             }
                             $sender = \Config\Services::email();
-                            $sender->setFrom('gabrielturing@gmail.com', 'Gabriel Silva');
+                            $sender->setFrom('teste@gmail.com', 'Tok');
                             $sender->setTo($email);
                             $sender->setSubject('Recuperação de conta - Tail of Dark');
                             $sender->setMessage($text);
@@ -237,24 +225,27 @@ class Auth extends BaseController
     {
         if (session()->has('login')) {
             $username = session()->get('login')['username'];
-            $path = $this->ingame . $this->dbsrv . 'account/' . $this->initial($username) . '/' . $username;
-            $mob = new Mob();
-            $mob->read($path);
-            $account = $mob->account_char_all();
-            $guildinfo = [];
-            $id = 0;
-            foreach ($account as $key => $value) {
-                $guildid = $value['attr']['guildid'];
-                $path = $this->ingame . $this->dbsrv . 'guild/' . $guildid . '.bin';
-                if (file_exists($path)) {
-                    $guild = file_get_contents($path);
-                    $guildname = trim(substr($guild, 4, 10));
-                    $medal = $value['attr']['guild']['item'];
-                    if ($medal == 509) {
-                        $guildinfo[$id]['guildname'] = $guildname;
-                        $guildinfo[$id]['guildid'] = $guildid;
-                        $id++;
-                    }
+            $ret = $this->vps('account', ['username' => $username]);
+            if ($ret->status == 'success') {
+                $mob = new Mob();
+                $mob->read($ret->account);
+                $account = $mob->account_char_all();
+                $guildinfo = [];
+                $id = 0;
+                foreach ($account as $key => $value) {
+                    $guildid = $value['attr']['guildid'];
+                    $request = ['guildid' => $guildid];
+                    $ret = $this->vps('guild', $request);
+                    if ($ret->status == 'success') {
+                        $guild = hex2bin($ret->guild);
+                        $guildname = trim(substr($guild, 4, 10));
+                        $medal = $value['attr']['guild']['item'];
+                        if ($medal == 509) {
+                            $guildinfo[$id]['guildname'] = $guildname;
+                            $guildinfo[$id]['guildid'] = $guildid;
+                            $id++;
+                        }
+                    }   
                 }
             }
             return json_encode($guildinfo);
@@ -339,6 +330,129 @@ class Auth extends BaseController
                     } else $this->data['error'] = 'Recaptcha inválido';
                 } else $this->data['error'] = 'Requisição inválida';
                 return redirect()->to(base_url('admin/createnews'))->with($this->rettype, $this->data);
+            }
+        }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+
+    public function createguide()
+    {
+        if (session()->has('login')) {
+            if (session()->get('login')['access'] == 3) {
+                if ($this->request->getMethod(true) == 'POST') {
+                    if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
+                        $guide = new Guides();
+                        $data = $this->request->getPost();
+                        if ($guide->save($data)) {
+                            $this->data['success'] = 'Guia criada com sucesso!';
+                        } else $this->data['error'] = implode("<div class=\"grid mt-5\"></div>", $guide->errors());
+                    } else $this->data['error'] = 'Recaptcha inválido';
+                } else $this->data['error'] = 'Requisição inválida';
+                return redirect()->to(base_url('admin/createguide'))->with($this->rettype, $this->data);
+            }
+        }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+
+    public function editguide()
+    {
+        if (session()->has('login')) {
+            if (session()->get('login')['access'] == 3) {
+                $ret = 'guides';
+                if ($this->request->getMethod(true) == 'POST') {
+                    if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
+                        $guide = new Guides();
+                        $id = $this->request->getPost('id');
+                        if ($id > 0) {
+                            $ret = 'editguide/' . $id;
+                            $data = $this->request->getPost();
+                            if ($guide->update($id, $data)) {
+                                $this->data['success'] = 'Guia alterado com sucesso!';
+                            } else $this->data['error'] = implode("<div class=\"grid mt-5\"></div>", $guide->errors());
+                        } else $this->data['error'] = 'Guia inválido';
+                    } else $this->data['error'] = 'Recaptcha inválido';
+                } else $this->data['error'] = 'Requisição inválida';
+                return redirect()->to(base_url('admin/' . $ret))->with($this->rettype, $this->data);
+            }
+        }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+
+    public function delguide($id = null)
+    {
+        if (session()->has('login')) {
+            if (session()->get('login')['access'] == 3) {
+                if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
+                    if ($id > 0) {
+                        $guide = new Guides();
+                        if ($guide->where('id', $id)->delete()) {
+                            $this->data['success'] = 'Guia deletado com sucesso!';
+                        } else $this->data['error'] = 'Não foi possível deletar o guia!';
+                    } else $this->data['error'] = 'Guia inválido!';
+                } else $this->data['error'] = 'Recaptcha inválido!';
+                return redirect()->to(base_url('admin/guides'))->with($this->rettype, $this->data);
+            }
+        }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+
+    public function delarticleguide($id = null)
+    {
+        if (session()->has('login')) {
+            if (session()->get('login')['access'] == 3) {
+                if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
+                    if ($id > 0) {
+                        $article = new GuideArticle();
+                        if ($article->where('id', $id)->delete()) {
+                            $this->data['success'] = 'Artigo deletado com sucesso do guia!';
+                        } else $this->data['error'] = 'Não foi possível deletar o artigo do guia!';
+                    } else $this->data['error'] = 'Artigo inválido!';
+                } else $this->data['error'] = 'Recaptcha inválido!';
+                return redirect()->to(base_url('admin/guides'))->with($this->rettype, $this->data);
+            }
+        }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+
+    public function addarticleguide()
+    {
+        if (session()->has('login')) {
+            if (session()->get('login')['access'] == 3) {
+                if ($this->request->getMethod(true) == 'POST') {
+                    if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
+                        $article = new GuideArticle();
+                        if ((new Guides())->where(['id' => $this->request->getPost('id_guide')])->first()) {
+                            if ($article->save($this->request->getPost())) {
+                                $this->data['success'] = 'Artigo adicionado ao guia com sucesso!';
+                            } else $this->data['error'] = implode("<div class=\"grid mt-5\"></div>", $article->errors());
+                        } else $this->data['error'] = 'Guia inexistente!';
+                    } else $this->data['error'] = 'Recaptcha inválido!';
+                } else $this->data['error'] = 'Requisição inválida!';
+                return redirect()->to(base_url('admin/guides'))->with($this->rettype, $this->data);
+            }
+        }
+        return redirect()->to(base_url('site'))->with($this->rettype, $this->data);
+    }
+
+    public function editarticleguide()
+    {
+        if (session()->has('login')) {
+            if (session()->get('login')['access'] == 3) {
+                $ret = 'guides';
+                if ($this->request->getMethod(true) == 'POST') {
+                    if (recaptcha($this->request->getPost('g-recaptcha-response'), $this->data['recaptcha_secret'])) {
+                        $article = new GuideArticle();
+                        $id = $this->request->getPost('id');
+                        if ($id > 0) {
+                            $ret = 'editarticleguide/' . $id;
+                            $data = $this->request->getPost();
+                            if ($article->update($id, $data)) {
+                                $this->data['success'] = 'Artigo alterado com sucesso do guia!';
+                            } else $this->data['error'] = implode("<div class=\"grid mt-5\"></div>", $article->errors());
+                        } else $this->data['error'] = 'Artigo inválido';
+                    } else $this->data['error'] = 'Recaptcha inválido';
+                } else $this->data['error'] = 'Requisição inválida';
+                return redirect()->to(base_url('admin/' . $ret))->with($this->rettype, $this->data);
             }
         }
         return redirect()->to(base_url('site'))->with($this->rettype, $this->data);

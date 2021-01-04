@@ -42,6 +42,14 @@ class Configuration extends Migration
 				'type' => 'VARCHAR',
 				'constraint' => '100'
 			],
+			'vps_token' => [
+				'type' => 'VARCHAR',
+				'constraint' => '255'
+			],
+			'vps_rest_address' => [
+				'type' => 'VARCHAR',
+				'constraint' => '100'
+			],
 			'created_at' => [
 				'type' => 'DATETIME'
 			],

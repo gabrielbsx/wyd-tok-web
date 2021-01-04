@@ -58,6 +58,25 @@ class BaseController extends Controller
 		}
 	}
 
+	public function vps($type, $request)
+	{
+	    $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => (new Configuration())->select(['vps_rest_address'])->first()['vps_rest_address'] . $type,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'X-Valland-Token: ' . (new Configuration())->select(['vps_token'])->first()['vps_token'],
+            ],
+            CURLOPT_POSTFIELDS => json_encode($request),
+		]);
+		$ret = json_decode(curl_exec($ch));
+        curl_close($ch);
+        return $ret;
+	}
+
 	/**
 	 * Constructor.
 	 */

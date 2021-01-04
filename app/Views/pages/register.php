@@ -5,7 +5,7 @@
         <span class="text-gray-300 z-0 bg-gradient-to-b from-gray-900 to-gray-800 border-t-4 border-gray-800 rounded-lg py-4 text-2xl">Cadastro</span>
     </div>
     <div class="bg-black rounded-b-lg">
-        <div class="px-72 py-12 place-items-center">
+        <div class="px-24 py-12 place-items-center">
             <form method="POST" action="<?= base_url('auth/register') ?>" class="mt-6">
                 <label for="username" class="block text-xs font-semibold text-gray-400 uppercase">Usuário</label>
                 <input id="username" pattern="[0-9A-Za-z]{4,12}" title="Apenas de 4 a 12 caracteres alfa numéricos" type="text" name="username" placeholder="kentaro" autocomplete="given-name" class="block rounded w-full p-3 mt-2 text-gray-200 bg-gray-800 appearance-none focus:outline-none focus:bg-gray-700 focus:shadow-inner" required />

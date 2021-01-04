@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\News;
+use App\Models\Guides;
+use App\Models\GuideArticle;
 
 class Site extends BaseController
 {
@@ -32,6 +34,17 @@ class Site extends BaseController
 	public function faq()
 	{
 		return view('pages/faq');
+	}
+
+	public function guides()
+	{
+		$guides = new Guides();
+		$articles = new GuideArticle();
+		$this->data['guides'] = $guides->orderBy('id', 'DESC')->get()->getResult('array');
+		foreach ($this->data['guides'] as $key => $value) {
+			$this->data['guides'][$key]['articles'] = $articles->where(['id_guide' => $value['id']])->orderBy('id', 'DESC')->get()->getResult('array');
+		}
+		return view('pages/guides', $this->data);
 	}
 
 	public function login()

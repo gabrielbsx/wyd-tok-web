@@ -13,6 +13,9 @@
             <a href="<?= base_url('site/ranking') ?>" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded-lg text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
                 <span>Ranking</span>
             </a>
+            <a href="<?= base_url('site/guides') ?>" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded-lg text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
+                <span>Guia do Jogo</span>
+            </a>
             <a href="<?= base_url('site/aboutus') ?>" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded-lg text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
                 <span>Sobre nós</span>
             </a>

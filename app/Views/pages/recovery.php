@@ -5,7 +5,7 @@
         <span class="text-gray-300 z-0 bg-gradient-to-b from-gray-900 to-gray-800 border-t-4 border-gray-800 rounded-lg py-4 text-2xl">Recuperação de contas</span>
     </div>
     <div class="bg-black rounded-b-lg">
-        <div class="px-72 py-12 place-items-center">
+        <div class="px-24 py-12 place-items-center">
             <form method="POST" action="<?= base_url('auth/recovery') ?>" class="mt-6">
                 <label for="email" class="block mt-2 text-xs font-semibold text-gray-400 uppercase">E-mail</label>
                 <input id="email" type="email" name="email" placeholder="kentaro@gmail.com" autocomplete="email" class="block rounded w-full p-3 mt-2 text-gray-200 bg-gray-800 appearance-none focus:outline-none focus:bg-gray-700 focus:shadow-inner" required />
