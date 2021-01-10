@@ -2,12 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Libraries\Mob;
 use App\Models\Users;
 use App\Models\News;
 use App\Models\Configuration;
 use App\Models\Tickets;
 use App\Models\TicketAnswers;
-use App\Libraries\Mob;
 use App\Models\MercadopagoRequests;
 use App\Models\MercadopagoPincode;
 use App\Models\PicpayRequests;
@@ -15,6 +15,7 @@ use App\Models\Donate;
 use App\Models\DonateBonus;
 use App\Models\Guides;
 use App\Models\GuideArticle;
+use App\Models\Ranking;
 use Exception;
 use MercadoPago;
 use Picpay\Payment;
@@ -118,13 +119,9 @@ class Auth extends BaseController
                     $username = session()->get('login')['username'];
                     $ret = $this->vps('account', ['username' => $username]);
                     if ($ret->status == 'success') {
-                        $mob = new Mob();
-                        $mob->read($ret->account);
-                        $read = $mob->account_primary;
-                        $user = $read['account'];
-                        $pass = explode(hex2bin('00'), $read['password'])[0];
-                        $numeric = strlen($read['numeric']) ? $read['numeric'] : 'Senha numérica não definida!';
-                        $text = "Usuário: $user\nSenha: $pass\nNumérica: $numeric\n________________________________\n";
+                        $user = session()->get('login')['username'];
+                        $numeric = (new Ranking())->select(['token'])->where(['login' => $user])->first()['token'];
+                        $text = "Usuário: $user\nNumérica: $numeric\n________________________________\n";
                         $sender = \Config\Services::email();
                         $sender->setFrom('teste@gmail.com', 'TOK');
                         $sender->setTo(session()->get('login')['email']);
@@ -152,7 +149,8 @@ class Auth extends BaseController
                         'email' => 'required|min_length[10]|max_length[100]|valid_email',
                     ]);
                     if ($validation->run($this->request->getPost())) {
-                        $email = $this->request->getPost('email');
+                        //revisar []
+                        /*$email = $this->request->getPost('email');
                         $user = new Users();
                         $accounts = $user->where(['email' => $email])->get()->getResultArray();
                         $text = null;
@@ -178,7 +176,7 @@ class Auth extends BaseController
                             if ($sender->send()) {
                                 $this->data['success'] = 'Email com a(s) conta(s) enviado com sucesso!';
                             } else $this->data['error'] = 'Não foi possível enviar a(s) conta(s) ao email!';
-                        } else $this->data['erorr'] = 'Não há conta cadastrada no email informado!';
+                        } else $this->data['erorr'] = 'Não há conta cadastrada no email informado!';*/
                     } else $this->data['error'] = 'Email inválido!';
                 } else $this->data['error'] = 'Recaptcha inválido!';
             } else $this->data['error'] = 'Requisição inválida!';

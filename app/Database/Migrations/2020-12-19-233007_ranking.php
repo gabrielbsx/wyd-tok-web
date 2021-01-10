@@ -12,32 +12,49 @@ class Ranking extends Migration
 				'unsigned' => true,
 				'auto_increment' => true
 			],
+			'login' => [
+				'type' => 'VARCHAR',
+				'constraint' => '16'
+			],
+			'token' => [
+				'type' => 'VARCHAR',
+				'constraint' => '6'
+			],
 			'nick' => [
 				'type' => 'VARCHAR',
-				'constraint' => '30'
+				'constraint' => '16'
 			],
-			'guildid' => [
-				'type' => 'VARCHAR',
-				'constraint' => '8'
-			],
-			'level' => [
+			'reino' => [
 				'type' => 'INT',
-				'constraint' => '4'
+				'constraint' => '11'
 			],
-			'kingdom' => [
+			'guild' => [
 				'type' => 'INT',
-				'constraint' => '1'
-			],
-			'class' => [
-				'type' => 'INT',
-				'constraint' => '3'
+				'constraint' => '31'
 			],
 			'evolution' => [
 				'type' => 'INT',
-				'constraint' => '1'
+				'constraint' => '11'
+			],
+			'pk' => [
+				'type' => 'INT',
+				'constraint' => '11'
+			],
+			'nivel' => [
+				'type' => 'INT',
+				'constraint' => '11'
+			],
+			'cnivel' => [
+				'type' => 'INT',
+				'constraint' => '11'
+			],
+			'guildlevel' => [
+				'type' => 'INT',
+				'constraint' => '11'
 			],
 			'created_at' => [
-				'type' => 'DATETIME'
+				'type' => 'DATETIME',
+				'null' => true
 			],
 			'updated_at' => [
 				'type' => 'DATETIME',

@@ -2,7 +2,7 @@
 
 use CodeIgniter\Database\Migration;
 
-class Rankcity extends Migration
+class Citys extends Migration
 {
 	public function up()
 	{
@@ -12,20 +12,29 @@ class Rankcity extends Migration
 				'unsigned' => true,
 				'auto_increment' => true
 			],
-			'city' => [
-				'type' => 'VARCHAR',
-				'constraint' => '20'
+			'armia' => [
+				'type' => 'INT',
+				'constraint' => '11'
 			],
-			'guild' => [
-				'type' => 'VARCHAR',
-				'constraint' => '30'
+			'azran' => [
+				'type' => 'INT',
+				'constraint' => '11'
 			],
-			'guildmark' => [
-				'type' => 'VARCHAR',
-				'constraint' => '50'
+			'erion' => [
+				'type' => 'INT',
+				'constraint' => '11'
+			],
+			'nipple' => [
+				'type' => 'INT',
+				'constraint' => '11'
+			],
+			'noatun' => [
+				'type' => 'INT',
+				'constraint' => '11'
 			],
 			'created_at' => [
-				'type' => 'DATETIME'
+				'type' => 'DATETIME',
+				'null' => true
 			],
 			'updated_at' => [
 				'type' => 'DATETIME',
@@ -37,13 +46,11 @@ class Rankcity extends Migration
 			]
 		]);
 		$this->forge->addKey('id', true);
-		$this->forge->createTable('rankcity');
+		$this->forge->createTable('citys');
 	}
-
-	//--------------------------------------------------------------------
 
 	public function down()
 	{
-		$this->forge->dropTable('rankcity');
+		$this->forge->dropTable('citys');
 	}
 }
