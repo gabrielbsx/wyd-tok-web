@@ -1,11 +1,15 @@
 <?php if (isset(session('web')['error'])) : ?>
-    <div class="mx-6 mt-6 message col-span-6 py-4 text-center text-white rounded-lg border-b-4 border-red-600 bg-red-800">
-        <?= session('web')['error'] ?>
+    <div class="fast-links" style="text-align:center;padding:15px;background-color: rgb(155, 25, 25);color:white;">
+        <h3 style="padding:0;margin:0;">
+            <?= session('web')['error'] ?>
+        </h3>
     </div>
 <?php endif; ?>
 
 <?php if (isset(session('web')['success'])) : ?>
-    <div class="mx-6 mt-6 message col-span-6 py-4 text-center text-white rounded-lg border-b-4 border-green-600 bg-green-800">
-        <?= session('web')['success'] ?>
+    <div class="fast-links" style="text-align:center;padding:15px;background-color: rgb(25, 155, 25);color:white;">
+        <h3 style="padding:0;margin:0;">
+            <?= session('web')['success'] ?>
+        </h3>
     </div>
 <?php endif; ?>

@@ -1,73 +1,25 @@
-<nav x-data="{show:false}" class="flex border-b-4 border-gray-900 justify-between items-center bg-black flex-wrap">
-    <button @click="show=!show" class="text-white inline-flex p-3 hover:bg-gray-900 rounded lg:hidden ml-auto hover:text-white outline-none nav-toggler" data-target="#navigation">
-        <i class="material-icons">menu</i>
-    </button>
-    <div @click.away="show = false" :class="{ 'block': show, 'hidden': !show }" class="hidden top-navbar w-full lg:inline-flex lg:flex-grow lg:w-auto" id="navigation">
-        <div class="lg:inline-flex lg:flex-row lg:mr-auto lg:w-auto w-full lg:items-center items-start flex flex-col lg:h-auto">
-            <a href="#" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
-                <img class="w-2 mr-2 text-gray-400" src="<?= base_url('images/tower.png') ?>">
-                <span><?= date('H:m:i', time() + time() + time()) ?></span>
-            </a>
-            <a href="#" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
-                <i class='fas fa-crown mr-2'></i>
-                <span><?= date('H:m:i') ?></span>
-            </a>
-            <a href="#" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
-                <i class="fas fa-flag mr-2"></i>
-                <span><?= date('H:m:i', time() + time()) ?></span>
-            </a>
-        </div>
-        <?php if (session()->has('login')) : ?>
-            <?php if (session()->get('login')['access'] == 3) : ?>
-                <div class="lg:inline-flex lg:flex-row lg:w-auto w-full lg:items-center items-start flex flex-col lg:h-auto">
-                    <div x-data="{ show: false }" @click.away="show = false">
-                        <button @click="show = ! show" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
-                            <span>Administração</span>
-                            <svg class="fill-current text-gray-200" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                                <path d="M7 10l5 5 5-5z" />
-                                <path d="M0 0h24v24H0z" fill="none" />
-                            </svg>
-                        </button>
-                        <div x-show="show" class="absolute text-white rounded-b-lg bg-black shadow-md" style="min-width:10rem;z-index:999;">
-                            <a class="block bg-gray-600 hover:bg-gray-700 px-3 py-2" href="<?= base_url('admin/config') ?>">Configurações</a>
-                            <a class="block bg-gray-600 hover:bg-gray-700 px-3 py-2" href="<?= base_url('admin/news') ?>">Notícias</a>
-                            <a class="block bg-gray-600 hover:bg-gray-700 px-3 py-2" href="<?= base_url('admin/donate') ?>">Pacotes de Donate</a>
-                            <a class="block bg-gray-600 hover:bg-gray-700 px-3 py-2" href="<?= base_url('admin/guides') ?>">Guia do jogo</a>
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
-        <?php endif; ?>
-        <div class="lg:inline-flex lg:flex-row lg:w-auto w-full lg:items-center items-start flex flex-col lg:h-auto">
-            <?php if (session()->has('login')) : ?>
-                <div class="mr-12" x-data="{ show: false }" @click.away="show = false">
-                    <button @click="show = ! show" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
-                        <span><i class="fas fa-user"></i> <?= ucfirst(session()->get('login')['username']) ?></span>
-                        <svg class="fill-current text-gray-200" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                            <path d="M7 10l5 5 5-5z" />
-                            <path d="M0 0h24v24H0z" fill="none" />
-                        </svg>
-                    </button>
-                    <div x-show="show" class="absolute text-white rounded-b-lg bg-black shadow-md" style="min-width:10rem;z-index:999;">
-                        <a class="block hover:bg-gray-800 px-3 py-2" href="<?= base_url('dashboard/tickets') ?>">Suporte</a>
-                        <a class="block hover:bg-gray-800 px-3 py-2" href="<?= base_url('dashboard/alterpass') ?>">Alterar senha</a>
-                        <a class="block hover:bg-gray-800 px-3 py-2" href="<?= base_url('dashboard/numericpass') ?>">Recuperar numérica</a>
-                        <a class="block hover:bg-gray-800 px-3 py-2" href="<?= base_url('dashboard/guildmark') ?>">Guildmark</a>
-                        <a class="block hover:bg-gray-800 px-3 py-2" href="<?= base_url('dashboard/donate') ?>">Doações</a>
-                        <a class="block hover:bg-gray-800 px-3 py-2" href="<?= base_url('dashboard/logout') ?>">Sair</a>
-                    </div>
-                </div>
-            <?php else : ?>
-                <a href="<?= base_url('site/login') ?>" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
-                    <span>Login</span>
-                </a>
-                <a href="<?= base_url('site/register') ?>" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
-                    <span>Cadastrar</span>
-                </a>
-                <a href="<?= base_url('site/recovery') ?>" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
-                    <span>Recuperar contas</span>
-                </a>
-            <?php endif; ?>
+<div class="sliderAndInfo">
+    <div class="headerNewText">
+        <div class="headerNewTextContent">
+            <div class="headerNewTextTitle">
+                É hora de ???
+                <br>
+                December 5, 2020
+            </div>
+            <div style="text-align: center;">
+                <img class="imgseparator-nixxxd" data-id="629acaa6-b6be-456c-a822-c2809c53e394" src="<?= base_url('promo/img/img-separator.png') ?>" anima-src="<?= base_url('promo/img/img-separator.png') ?>">
+            </div>
+            <div class="headerNewTextMiniTitle">
+                Rechdan
+            </div>
         </div>
     </div>
-</nav>
+    <a href="<?= base_url('site/downloads') ?>" class="playNowButton">Jogue Agora!</a>
+    <div id="sliderWrapper">
+        <div id="hero_slider_367_id" class="container_3gdZ swiper-container swiper-container-horizontal">
+            <video autoplay="" loop="" id="bgvideo" muted="" style="width: 100%;">
+                <source src="https://wydglobal.raidhut.com/videos/HT.mp4" type="video/mp4; codecs=&quot;avc1.42E01E, mp4a.40.2&quot;">
+            </video>
+        </div>
+    </div>
+</div>

@@ -1,55 +1,63 @@
 <?= $this->extend('dashboard/layouts') ?>
 <?= $this->section('page') ?>
-<div class="container mx-auto col-span-6 py-8 px-4">
-    <div class="grid text-center">
-        <span class="text-gray-300 z-0 bg-gradient-to-b from-gray-900 to-gray-800 border-t-4 border-gray-800 rounded-lg py-4 text-2xl">Suporte</span>
-    </div>
-    <div class="bg-black py-6 px-12 rounded-b-lg">
-        <div class="grid text-center mb-6">
-            <a href="<?= base_url('dashboard/createticket') ?>" class="py-4 px-6 w-full text-gray-300 bg-gray-800 hover:bg-gray-700 rounded">Adicionar novo ticket</a>
+<main class="content">
+    <div class="news-p">
+        <div class="block-title">
+            <div class="title">
+                <span>S</span>uporte
+            </div>
         </div>
-        <div class="text-white grid grid-cols-4">
-            <?php if ($paginate_tickets) : ?>
-                <?php foreach ($paginate_tickets as $key => $value) : ?>
-                    <div class="col-span-4 grid grid-cols-8 my-2 px-1 py-4 px-6 bg-gray-800 border-b-4 border-gray-900 text-gray-300 rounded-lg bg-black">
-                        <div class="col-span-5 px-1 py-2">
-                            <span class="text-left"><?= $value['title'] ?></span>
-                        </div>
-                        <div class="col-span-1 px-1 py-2">
-                            <span class="text-left">
-                                <?php if ($value['updated_at']) : ?>
-                                    <?= $value['updated_at'] ?>
-                                <?php else : ?>
-                                    <?= $value['created_at'] ?>
-                                <?php endif; ?>
-                            </span>
-                        </div>
-                        <div class="col-span-2 text-right">
-                            <div class="grid grid-cols-2 text-center">
-                                <a href="<?= base_url('dashboard/answerticket/' . $value['id']) ?>" class="bg-blue-700 hover:bg-blue-600 hover:border-blue-800 col-span-1 px-12 mr-2 py-2 rounded-lg border-b-4 border-blue-900">
-                                    Abrir
-                                </a>
-                                <?php if ($value['status'] == 0) : ?>
-                                    <a class="bg-yellow-700 hover:bg-yellow-600 hover:border-yellow-800 col-span-1 px-12 py-2 rounded-lg border-b-4 border-yellow-900">
-                                        Pendente
+        <div class="last-more-fon">
+            <div id="content">
+                <div id="box1">
+                    <div id="content_center">
+                        <div class="box-style1">
+                            <div class="entry">
+                                <div style="margin:10px 0;text-align:center;">
+                                    <a href="<?= base_url('dashboard/createticket') ?>" style="background-color:rgb(55,55,55);padding:10px 20px;display:block;text-align:center;margin:0 auto;">
+                                        Adicionar novo ticket
                                     </a>
-                                <?php else : ?>
-                                    <a class="bg-red-700 hover:bg-red-600 hover:border-red-800 col-span-1 px-12 py-2 rounded-lg border-b-4 border-red-900">
-                                        Encerrado
-                                    </a>
-                                <?php endif; ?>
+                                </div>
+                                <div style="margin:10px 0;text-align:center;">
+                                    <?php if ($paginate_tickets) : ?>
+                                        <?php foreach ($paginate_tickets as $key => $value) : ?>
+                                            <div style="display:inline-block;width:100%;background-color:rgb(55,55,55);margin-top: 10px;">
+                                                <div style="padding:10px;display:flex;">
+                                                    <span style="padding:10px;">
+                                                        <?= $value['title'] ?>
+                                                    </span>
+                                                    <div style="display:flex;margin-left:auto;">
+                                                        <a href="<?= base_url('dashboard/answerticket/' . $value['id']) ?>" style="background-color:rgb(25,25,75);padding:10px 20px;">
+                                                            Abrir
+                                                        </a>
+                                                        <?php if ($value['status'] == 0) : ?>
+                                                            <div style="background-color:rgb(75,75,25);padding:10px 20px;">
+                                                                Pendente
+                                                            </div>
+                                                        <?php else : ?>
+                                                            <div style="background-color:rgb(75,25,25);padding:10px 20px;">
+                                                                Encerrado
+                                                            </div>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                        <?php if ($pager_tickets) : ?>
+                                            <?= $pager_tickets->links('package', 'pagination') ?>
+                                        <?php endif; ?>
+                                    <?php else : ?>
+                                        <div style="text-align:center;">
+                                            Não há ticket!
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            <?php else : ?>
-                <div class="col-span-4 px-1 text-center">
-                    <p class="py-4 px-6 bg-gray-900 border-b-4 border-gray-800 text-gray-300 rounded bg-black">
-                        Não há ticket!
-                    </p>
                 </div>
-            <?php endif; ?>
+            </div>
         </div>
     </div>
-</div>
+</main>
 <?= $this->endSection() ?>

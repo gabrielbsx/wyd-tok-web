@@ -1,22 +1,30 @@
 <?= $this->extend('layouts') ?>
 <?= $this->section('page') ?>
-<div class="container mx-auto col-span-6 py-8 px-4">
-    <div class="grid text-center">
-        <span class="text-gray-300 z-0 bg-gradient-to-b from-gray-900 to-gray-800 border-t-4 border-gray-800 rounded-lg py-4 text-2xl">Recuperação de contas</span>
-    </div>
-    <div class="bg-black rounded-b-lg">
-        <div class="px-24 py-12 place-items-center">
-            <form method="POST" action="<?= base_url('auth/recovery') ?>" class="mt-6">
-                <label for="email" class="block mt-2 text-xs font-semibold text-gray-400 uppercase">E-mail</label>
-                <input id="email" type="email" name="email" placeholder="kentaro@gmail.com" autocomplete="email" class="block rounded w-full p-3 mt-2 text-gray-200 bg-gray-800 appearance-none focus:outline-none focus:bg-gray-700 focus:shadow-inner" required />
-                <?php if (isset($recaptcha)) : ?>
-                    <div class="g-recaptcha" data-sitekey="<?= $recaptcha ?>"></div>
-                <?php endif; ?>
-                <button type="submit" class="w-full py-3 mt-6 font-medium tracking-widest text-white uppercase bg-gray-800 rounded border-b-4 border-gray-700 shadow-lg focus:outline-none hover:bg-gray-700 hover:shadow-none">
-                    Recuperar contas
-                </button>
-            </form>
+<main class="content">
+    <div class="news-p">
+        <div class="block-title">
+            <div class="title">
+                <span>R</span>ecuperar conta
+            </div>
         </div>
+        <form method="POST" action="<?= base_url('auth/recovery') ?>" id="loginForm">
+            <div class="block" style="margin:10px;text-align:center;">
+                <input type="email" id="emailType" name="email" placeholder="Email" />
+            </div>
+            <div class="block" style="margin:10px;text-align:center;">
+                <?php if (isset($recaptcha)) : ?>
+                    <div class="text-center">
+                        <div style="margin: 0 auto;text-align:Center;" class="g-recaptcha" data-sitekey="<?= $recaptcha ?>"></div>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="clearfix"></div>
+            <div style="text-align:center;margin: 0 auto;" class="login-button2">
+                <button type="submit">
+                    <span class="text"> Recuperar </span>
+                </button>
+            </div>
+        </form>
     </div>
-</div>
+</main>
 <?= $this->endSection() ?>

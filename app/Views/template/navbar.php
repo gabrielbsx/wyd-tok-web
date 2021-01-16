@@ -1,27 +1,64 @@
-<nav x-data="{show:false}" class="flex mt-4 md:mx-auto md:container rounded border-b-4 mb-12 border-gray-600 rounded-lg justify-between items-center bg-gradient-to-b from-gray-800 to-gray-900 p-3 flex-wrap">
-    <button @click="show=!show" class="text-white inline-flex p-3 hover:bg-gray-900 rounded lg:hidden ml-auto hover:text-white outline-none nav-toggler" data-target="#navigation">
-        <i class="material-icons">menu</i>
-    </button>
-    <a href="<?= base_url('site') ?>" class="p-2 mr-4 inline-flex items-center">
-        <img class="w-20 hover:opacity-100 opacity-80" src="<?= base_url('images/logo-2.png') ?>">
-    </a>
-    <div @click.away="show = false" :class="{ 'block': show, 'hidden': !show }" class="hidden top-navbar w-full lg:inline-flex lg:flex-grow lg:w-auto" id="navigation">
-        <div class="lg:inline-flex lg:flex-row lg:mr-auto lg:w-auto w-full lg:items-center items-start flex flex-col lg:h-auto">
-            <a href="<?= base_url('site/downloads') ?>" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded-lg text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
-                <span>Downloads</span>
+<?php $uri = $uri = new \CodeIgniter\HTTP\URI(current_url(true)); ?>
+<div class="center">
+    <a href="<?= base_url('site') ?>" class="logo"></a>
+    <ul class="mainMenu">
+        <li>
+            <a class="menu-item" href="<?= base_url('site/news') ?>">
+                Notícias
             </a>
-            <a href="<?= base_url('site/ranking') ?>" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded-lg text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
-                <span>Ranking</span>
+        </li>
+        <li>
+            <a class="menu-item" href="<?= base_url('site/guides') ?>">
+                Guia do Jogo
             </a>
-            <a href="<?= base_url('site/guides') ?>" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded-lg text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
-                <span>Guia do Jogo</span>
+        </li>
+        <li class="dropdown">
+            <a class="menu-item" href="#">
+                Comunidade
             </a>
-            <a href="<?= base_url('site/aboutus') ?>" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded-lg text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
-                <span>Sobre nós</span>
+            <ul class="dropdown-content">
+                <li>
+                    <a href="<?= base_url('site/ranking') ?>" class="menu-item">
+                        Ranking
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('site/blacklist') ?>" class="menu-item">
+                        Blacklist
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('site/guildmark') ?>" class="menu-item">
+                        Guildmark
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a class="menu-item" href="<?= base_url('site/downloads') ?>">
+                Downloads
             </a>
-            <a href="<?= base_url('site/faq') ?>" class="lg:inline-flex lg:w-auto w-full px-6 py-2 rounded-lg text-gray-400 items-center justify-center hover:bg-gray-900 hover:text-white">
-                <span>FAQ</span>
+        </li>
+        <li class="dropdown">
+            <a class="menu-item" href="#">
+                Suporte
             </a>
-        </div>
+            <ul class="dropdown-content">
+                <li>
+                    <a href="<?= base_url('site/faq') ?>" class="menu-item">
+                        FAQ
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('dashboard/support') ?>" class="menu-item">
+                        Fale Conosco
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <div class="buttons">
+        <a href="<?= base_url('dashboard') ?>" class="buyCoinsButton">PAINEL DO USUÁRIO</a>
     </div>
-</nav>
+    <br class="clearer" />
+</div>

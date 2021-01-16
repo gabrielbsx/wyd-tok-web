@@ -1,72 +1,108 @@
 <?= $this->extend('layouts') ?>
 <?= $this->section('page') ?>
-<div class="container mx-auto col-span-6 py-8 px-4">
-    <div class="grid text-center">
-        <span class="text-gray-300 z-0 bg-gradient-to-b from-gray-900 to-gray-800 border-t-4 border-gray-800 rounded-lg py-4 text-2xl">Ranking</span>
-    </div>
-    <div class="bg-black rounded-b-lg">
-
-        <div class="px-48 py-12 place-items-center">
-
-            <div class="mx-auto px-4 sm:px-8">
-                <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-                    <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                        <table class="min-w-full leading-normal">
-                            <thead>
-                                <tr>
-                                    <th class="px-5 py-6 border-b-4 border-gray-900 bg-gray-800 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">
-                                        Player
-                                    </th>
-                                    <th class="px-5 py-6 border-b-4 border-gray-900 bg-gray-800 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">
-                                        Level
-                                    </th>
-                                    <th class="px-5 py-6 border-b-4 border-gray-900 bg-gray-800 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">
-                                        Classe
-                                    </th>
-                                    <th class="px-5 py-6 border-b-4 border-gray-900 bg-gray-800 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">
-                                        Evolução
-                                    </th>
-                                    <th class="px-5 py-6 border-b-4 border-gray-900 bg-gray-800 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider">
-                                        Guild
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="px-5 py-5 border-b-4 border-gray-500 bg-gray-700 text-sm">
-                                        <p class="text-gray-200 whitespace-no-wrap">
-                                            Vera Carpenter
-                                        </p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b-4 border-gray-500 bg-gray-700 text-sm">
-                                        <p class="text-gray-200 whitespace-no-wrap">
-                                            200
-                                        </p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b-4 border-gray-500 bg-gray-700 text-sm">
-                                        <p class="text-gray-200 whitespace-no-wrap">
-                                            Foema
-                                        </p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b-4 border-gray-500 bg-gray-700 text-sm">
-                                        <p class="text-gray-200 whitespace-no-wrap">
-                                            Mortal
-                                        </p>
-                                    </td>
-                                    <td class="px-5 py-5 border-b-4 border-gray-500 bg-gray-700 text-sm">
-                                        <p class="text-gray-200 whitespace-no-wrap">
-                                            Mortal
-                                        </p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+<?php
+$class = [
+    '0' => '<img src="' . base_url('assets/images/tk.gif') . '">',
+    '1' => '<img src="' . base_url('assets/images/bm.gif') . '">',
+    '2' => '<img src="' . base_url('assets/images/fm.gif') . '">',
+    '3' => '<img src="' . base_url('assets/images/ht.gif') . '">'
+];
+$kingdom = [
+    '0' => '<img style="height:50%" src="' . base_url('assets/images/white.png') . '">',
+    '7' => '<img style="height:50%" src="' . base_url('assets/images/red.png') . '">',
+    '8' => '<img style="height:50%" src="' . base_url('assets/images/blue.png') . '">'
+];
+$evolution = [
+    '1' => 'Mortal',
+    '2' => 'Arch',
+    '3' => 'Celestial',
+    '4' => 'Subcelestial'
+];
+$translate = [
+    'nick' => 'Jogador',
+    'guild' => 'Guild',
+    'level' => 'Nível',
+    'kingdom' => 'Reino',
+    'class' => 'Classe',
+    'evolution' => 'Evolução',
+    'city' => 'Cidade',
+    'guildmark' => 'Guildmark'
+];
+?>
+<br class="clearer" />
+<div class="center">
+    <br class="clearer" />
+    <br class="clearer" />
+    <div class="contentMid">
+        <div class="blockWithIMGHeader">
+            <ul class="news">
+                <div class="scroller">
+                    <div class="page all" data-bind="1">
+                        <?php if (isset($ranking_paginate) && is_array($ranking_paginate)) : ?>
+                            <li style="margin:10px;" class="news-block">
+                                <div class="newsContent">
+                                    <div class="teazer">
+                                        <?php if (isset($ranking_paginate) && is_array($ranking_paginate)) : ?>
+                                            <table style="margin-left: 0px;width: 545px;font-size: 12px;font-family: 'Open Sans', sans-serif;" width="310">
+                                                <thead>
+                                                    <tr>
+                                                        <?php foreach ($ranking_paginate[0] as $key => $value) : ?>
+                                                            <?php if (in_array($key, ['id', 'created_at', 'updated_at', 'deleted_at'])) continue; ?>
+                                                            <th style="margin:10px;padding:10px;text-align:left;">
+                                                                <?= $translate[$key] ?>
+                                                            </th>
+                                                        <?php endforeach; ?>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($ranking_paginate as $key => $value) : ?>
+                                                        <tr style="text-align:center;">
+                                                            <?php foreach ($value as $key2 => $char) : ?>
+                                                                <?php if (in_array($key2, ['id', 'created_at', 'updated_at', 'deleted_at'])) continue; ?>
+                                                                <td style="margin:10px;padding:10px;text-align:left;">
+                                                                    <?php if ($key2 == 'nick') : ?>
+                                                                        <?= $char ?>
+                                                                    <?php elseif ($key2 == 'level') : ?>
+                                                                        <?= $char + 1 ?>
+                                                                    <?php elseif ($key2 == 'evolution') : ?>
+                                                                        <?= $evolution[$char] ?>
+                                                                    <?php elseif ($key2 == 'class') : ?>
+                                                                        <?= $class[$char] ?>
+                                                                    <?php elseif ($key2 == 'kingdom') : ?>
+                                                                        <?= $kingdom[$char] ?>
+                                                                    <?php elseif ($key2 == 'guild') : ?>
+                                                                        <?php $imguild = 'img_guilds/' . ('/b0' . (1000000 + $char)) . '.bmp' ?>
+                                                                        <?php $defaultguild = 'img_guilds/b01000000.bmp' ?>
+                                                                        <img src="<?= file_exists(FCPATH . $imguild) ? base_url($imguild) : base_url($defaultguild) ?>">
+                                                                    <?php else : ?>
+                                                                        <?= $char ?>
+                                                                    <?php endif; ?>
+                                                                </td>
+                                                            <?php endforeach; ?>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                </tbody>
+                                            </table>
+                                        <?php else : ?>
+                                            Aguardando atualização do ranking!
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <br class="clearer" />
+                                <br class="clearer" />
+                            </li>
+                        <?php endif; ?>
                     </div>
                 </div>
-            </div>
-
+                <div class="arhive">
+                    <div class="arhive-im"></div>
+                </div>
+            </ul>
         </div>
-
     </div>
+    <?= view('template/aside') ?>
+    <br class="clearer" />
+    <br class="clearer" />
+    <br class="clearer" />
 </div>
 <?= $this->endSection() ?>

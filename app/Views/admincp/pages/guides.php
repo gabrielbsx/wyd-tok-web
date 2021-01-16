@@ -1,51 +1,46 @@
 <?= $this->extend('admincp/layouts') ?>
 <?= $this->section('page') ?>
-<div class="container mx-auto col-span-6 py-8 px-4">
-    <div class="grid text-center">
-        <span class="text-gray-300 z-0 bg-gradient-to-b from-gray-900 to-gray-800 border-t-4 border-gray-800 rounded-lg py-4 text-2xl">Guia do jogo</span>
-    </div>
-    <div class="bg-black py-6 px-12 rounded-b-lg">
-        <div class="grid text-center mb-6">
-            <a href="<?= base_url('admin/createguide') ?>" class="py-4 px-6 w-full text-gray-300 bg-gray-800 hover:bg-gray-700 rounded">Adicionar nova guia</a>
+<main class="content">
+    <div class="news-p">
+        <div class="block-title">
+            <div class="title">
+                <span>S</span>istema de Guias
+            </div>
         </div>
-        <div class="text-white grid grid-cols-4">
-            <?php if ($paginate_guides) : ?>
-                <?php foreach ($paginate_guides as $key => $value) : ?>
-                    <div class="col-span-4 grid grid-cols-8 my-2 px-1 py-4 px-6 bg-gray-800 border-b-4 border-gray-900 text-gray-300 rounded-lg bg-black">
-                        <div class="col-span-3 px-1 py-2">
-                            <span class="text-left"><?= $value['name'] ?></span>
-                        </div>
-                        <div class="col-span-1 px-1 py-2">
-                            <span class="text-left">
-                                <?= $value['updated_at'] ?? $value['created_at'] ?>
-                            </span>
-                        </div>
-                        <div class="col-span-4 text-right">
-                            <div class="grid grid-cols-3 text-center">
-                                <a href="<?= base_url('admin/addarticleguide/' . $value['id']) ?>" class="bg-green-700 hover:bg-green-600 hover:border-green-800 col-span-1 px-12 mr-2 py-2 rounded-lg border-b-4 border-green-900">
-                                    Adicionar Artigo
-                                </a>
-                                <a href="<?= base_url('admin/editguide/' . $value['id']) ?>" class="bg-blue-700 hover:bg-blue-600 hover:border-blue-800 col-span-1 px-12 mr-2 py-2 rounded-lg border-b-4 border-blue-900">
-                                    Editar
-                                </a>
-                                <a href="<?= base_url('auth/delguide/' . $value['id']) ?>" class="bg-red-700 hover:bg-red-600 hover:border-red-800 col-span-1 px-12 py-2 rounded-lg border-b-4 border-red-900">
-                                    Deletar
-                                </a>
+        <div class="last-more-fon">
+            <div id="content">
+                <div style="margin:10px 0;text-align:center;">
+                    <a href="<?= base_url('admin/createguide') ?>" style="background-color:rgb(55,55,55);padding:10px 20px;display:block;text-align:center;margin:0 auto;">Adicionar novo guia</a>
+                </div>
+                <?php if ($paginate_guides) : ?>
+                    <?php foreach ($paginate_guides as $key => $value) : ?>
+                        <div style="display:inline-block;width:100%;background-color:rgb(55,55,55);margin-top: 10px;">
+                            <div style="padding:10px;display:flex;">
+                                <span style="padding:10px;color:white;">
+                                    <?= $value['name'] ?>
+                                </span>
+                                <div style="display:flex;margin-left:auto;">
+                                    <a href="<?= base_url('admin/addarticleguide/' . $value['id']) ?>" style="background-color:rgb(25,25,75);padding:10px 20px;">
+                                        Adicionar Artigo
+                                    </a>
+                                    <a href="<?= base_url('admin/editguide/' . $value['id']) ?>" style="background-color:rgb(25,75,25);padding:10px 20px;">
+                                        Editar
+                                    </a>
+                                    <a href="<?= base_url('auth/delguide/' . $value['id']) ?>" style="background-color:rgb(75,25,25);padding:10px 20px;">
+                                        Deletar
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-                <?php if ($pager_guides) : ?>
-                    <?= $pager_guides->links('guides', 'pagination') ?>
+                    <?php endforeach; ?>
+                    <?php if ($pager_guides) : ?>
+                        <?= $pager_guides->links('guides', 'pagination') ?>
+                    <?php endif; ?>
+                <?php else : ?>
+                    Não há guia!
                 <?php endif; ?>
-            <?php else : ?>
-                <div class="col-span-4 px-1 text-center">
-                    <p class="py-4 px-6 bg-gray-900 border-b-4 border-gray-800 text-gray-300 rounded bg-black">
-                        Não há guia!
-                    </p>
-                </div>
-            <?php endif; ?>
+            </div>
         </div>
     </div>
-</div>
+</main>
 <?= $this->endSection() ?>

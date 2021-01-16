@@ -1,94 +1,96 @@
 <?= $this->extend('layouts') ?>
 <?= $this->section('page') ?>
-<div class="container mx-auto col-span-6 py-8 px-4">
-    <div class="grid text-center">
-        <span class="text-gray-300 z-0 bg-gradient-to-b from-gray-900 to-gray-800 border-t-4 border-gray-800 py-4 text-2xl">Downloads</span>
-    </div>
-    <div class="px-6 py-8 bg-gray-900 rounded-b-lg">
-        <div class="grid grid-cols-3">
-            <a class="col-span-1 hover:opacity-80 mx-1 mb-6 border-b-4 border-blue-900 px-6 py-4 text-center text-white rounded-lg bg-blue-600" href="#">
-                Mediafire
-            </a>
-            <a class="col-span-1 hover:opacity-80 mx-1 mb-6 border-b-4 border-gray-800 px-6 py-4 text-center text-white rounded-lg bg-gray-700" href="#">
-                4shared
-            </a>
-            <a class="col-span-1 hover:opacity-80 mx-1 mb-6 border-b-4 border-red-900 px-6 py-4 text-center text-white rounded-lg bg-red-600" href="#">
-                Mega
-            </a>
+<main class="content">
+    <div class="news-p">
+        <div class="block-title">
+            <div class="title">
+                <span>D</span>ownloads
+            </div>
         </div>
-        <div class="inline-grid lg:flex rounded-lg shadow-lg pb-6 lg:pb-0">
-            <table class="min-w-full table-auto">
-                <thead class="justify-between">
-                    <tr class="bg-gray-700 text-left rounded-t-lg">
-                        <th class="py-4" colspan="1">
+        <div class="last-more-fon" style="padding:20px;">
+            <div style="display:block;text-align:center; padding:20px;">
+                <a style="background-color:rgb(55,55,155);padding: 10px 10%;margin:5px;" href="#">
+                    Mediafire
+                </a>
+                <a style="background-color:rgb(55,155,55);padding: 10px 10%;margin:5px;" href="#">
+                    4shared
+                </a>
+                <a style="background-color:rgb(155,55,55);padding: 10px 10%;margin:5px;" href="#">
+                    Mega
+                </a>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="padding:10px;text-align:left;" colspan="1">
                         </th>
-                        <th class="py-4" colspan="1">
+                        <th style="padding:10px;text-align:left;" colspan="1">
                             <span class="text-gray-300">Mínimo</span>
                         </th>
-                        <th class="py-4" colspan="1">
+                        <th style="padding:10px;text-align:left;" colspan="1">
                             <span class="text-gray-300">Recomendado</span>
                         </th>
                     </tr>
                 </thead>
-                <tbody class="bg-gray-800">
-                    <tr class="rounded-b-lg text-white text-left">
-                        <td class="py-3 pl-4">
-                            <span class="font-semibold">Processadores</span>
-                        </td>
-                        <td class="py-3">
+                <tbody>
+                    <tr>
+                        <td style="padding:10px;">
+                            <span>Processadores</span>
+                        </td style="padding:10px;">
+                        <td style="padding:10px;">
                             <span>Intel Pentium 4 1.5 GHz</span>
-                        </td>
-                        <td class="py-3">
+                        </td style="padding:10px;">
+                        <td style="padding:10px;">
                             <span>Intel Pentium 4 2.8 GHz +</span>
-                        </td>
+                        </td style="padding:10px;">
                     </tr>
-                    <tr class="rounded-b-lg text-white text-left">
-                        <td class="py-3 pl-4">
-                            <span class="font-semibold">Memória RAM</span>
-                        </td>
-                        <td class="py-3">
+                    <tr>
+                        <td style="padding:10px;">
+                            <span>Memória RAM</span>
+                        </td style="padding:10px;">
+                        <td style="padding:10px;">
                             <span>512 MB</span>
-                        </td>
-                        <td class="py-3">
+                        </td style="padding:10px;">
+                        <td style="padding:10px;">
                             <span>1 GB</span>
-                        </td>
+                        </td style="padding:10px;">
                     </tr>
-                    <tr class="rounded-b-lg text-white text-left">
-                        <td class="py-3 pl-4">
-                            <span class="font-semibold">Placa de Vídeo</span>
-                        </td>
-                        <td class="py-3">
+                    <tr>
+                        <td style="padding:10px;">
+                            <span>Placa de Vídeo</span>
+                        </td style="padding:10px;">
+                        <td style="padding:10px;">
                             <span>NVidia FX 52000 / ATI Radeon 9500</span>
-                        </td>
-                        <td class="py-3">
+                        </td style="padding:10px;">
+                        <td style="padding:10px;">
                             <span>NVidia GeForce 6600 / ATI Radeon 9800</span>
-                        </td>
+                        </td style="padding:10px;">
                     </tr>
-                    <tr class="rounded-b-lg text-white text-left">
-                        <td class="py-3 pl-4">
-                            <span class="font-semibold">Hard Disk</span>
-                        </td>
-                        <td class="py-3">
+                    <tr>
+                        <td style="padding:10px;">
+                            <span>Hard Disk</span>
+                        </td style="padding:10px;">
+                        <td style="padding:10px;">
                             <span>500 MB</span>
-                        </td>
-                        <td class="py-3">
+                        </td style="padding:10px;">
+                        <td style="padding:10px;">
                             <span>1 GB</span>
-                        </td>
+                        </td style="padding:10px;">
                     </tr>
-                    <tr class="rounded-b-lg text-white text-left">
-                        <td class="py-3 pl-4">
-                            <span class="font-semibold">Sistema</span>
-                        </td>
-                        <td class="py-3">
+                    <tr>
+                        <td style="padding:10px;">
+                            <span>Sistema</span>
+                        </td style="padding:10px;">
+                        <td style="padding:10px;">
                             <span>Windows XP</span>
-                        </td>
-                        <td class="py-3">
+                        </td style="padding:10px;">
+                        <td style="padding:10px;">
                             <span>Windows 7 +</span>
-                        </td>
+                        </td style="padding:10px;">
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-</div>
+</main>
 <?= $this->endSection() ?>
