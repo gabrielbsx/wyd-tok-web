@@ -17,8 +17,8 @@
     <a href="<?= base_url('site/downloads') ?>" class="playNowButton">Jogue Agora!</a>
     <div id="sliderWrapper">
         <div id="hero_slider_367_id" class="container_3gdZ swiper-container swiper-container-horizontal">
-            <video autoplay="" loop="" id="bgvideo" muted="" style="width: 100%;">
-                <source src="https://wydglobal.raidhut.com/videos/HT.mp4" type="video/mp4; codecs=&quot;avc1.42E01E, mp4a.40.2&quot;">
+            <video autoplay="" loop="" id="bgvideo" muted="" style="width: 100%; opacity:0.4">
+                <source src="https://wydglobal.raidhut.com/videos/BM.mp4" type="video/mp4; codecs=&quot;avc1.42E01E, mp4a.40.2&quot;">
             </video>
         </div>
     </div>

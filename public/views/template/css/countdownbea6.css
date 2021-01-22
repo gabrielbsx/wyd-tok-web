@@ -1,0 +1,130 @@
+.main-countdown {
+    float: left;
+    margin: -30px 0 0 10px;
+    width: 250px;
+}
+.main-countdown .title{
+    /*text-align: center;*/
+    margin: -10px 0 9px 0;
+    font-size: 22px;
+    color: #fdfffe;
+    position: relative;
+    display: block;
+    text-shadow: 1px 1px 2px rgb(42, 38, 41);
+    line-height: 22px;
+}
+.main-countdown .countdown-container {
+    height: 130px;
+}
+.main-countdown .time {
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    height: 55px;
+    width: 60px;
+
+}
+.main-countdown .count {
+    background: #262429;
+    color: #f8f8f8;
+    display: block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 2em;
+    line-height: 1.7em;
+    overflow: hidden;
+    position: absolute;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    top: 0;
+    width: 100%;
+}
+.main-countdown .count.top {
+    border-top: 1px solid rgba(255,255,255,0.2);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-radius: 5px 5px 0 0;
+    height: 50%;
+
+    -webkit-transform-origin: 50% 100%;
+    -moz-transform-origin: 50% 100%;
+    -ms-transform-origin: 50% 100%;
+    -o-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+}
+.main-countdown .count.bottom {
+    background-image: linear-gradient(rgba(255,255,255,0.1), transparent);
+    background-image: -webkit-linear-gradient(rgba(255,255,255,0.1), transparent);
+    background-image: -moz-linear-gradient(rgba(255,255,255,0.1), transparent);
+    background-image: -ms-linear-gradient(rgba(255,255,255,0.1), transparent);
+    background-image: -o-linear-gradient(rgba(255,255,255,0.1), transparent);
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    border-radius: 0 0 5px 5px;
+    line-height: 0;
+    height: 50%;
+    top: 50%;
+
+    -webkit-transform-origin: 50% 0;
+    -moz-transform-origin: 50% 0;
+    -ms-transform-origin: 50% 0;
+    -o-transform-origin: 50% 0;
+    transform-origin: 50% 0;
+}
+.main-countdown .count.next {
+}
+.main-countdown .label {
+    font-size: normal;
+    margin-top: 5px;
+    display: block;
+    position: absolute;
+    top: 57px;
+    text-shadow: 1px 1px 2px #000;
+    width: 100%;
+    color: #f3f1d8;
+}
+/* Animation start */
+.main-countdown .count.curr.top {
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    z-index: 3;
+}
+.main-countdown .count.next.bottom {
+    -webkit-transform: rotateX(90deg);
+    -moz-transform: rotateX(90deg);
+    -ms-transform: rotateX(90deg);
+    -o-transform: rotateX(90deg);
+    transform: rotateX(90deg);
+    z-index: 2;
+}
+/* Animation end */
+.main-countdown .flip .count.curr.top {
+    -webkit-transition: all 250ms ease-in-out;
+    -moz-transition: all 250ms ease-in-out;
+    -ms-transition: all 250ms ease-in-out;
+    -o-transition: all 250ms ease-in-out;
+    transition: all 250ms ease-in-out;
+
+    -webkit-transform: rotateX(-90deg);
+    -moz-transform: rotateX(-90deg);
+    -ms-transform: rotateX(-90deg);
+    -o-transform: rotateX(-90deg);
+    transform: rotateX(-90deg);
+}
+.main-countdown .flip .count.next.bottom {
+    -webkit-transition: all 250ms ease-in-out 250ms;
+    -moz-transition: all 250ms ease-in-out 250ms;
+    -ms-transition: all 250ms ease-in-out 250ms;
+    -o-transition: all 250ms ease-in-out 250ms;
+    transition: all 250ms ease-in-out 250ms;
+
+    -webkit-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+}

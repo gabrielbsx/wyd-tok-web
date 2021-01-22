@@ -11,7 +11,7 @@
             <div id="content" style="padding:20px;">
                 Escrever os termos aqui
                 <div style="margin:0 auto;margin-top:20px;text-align:center;">
-                    <a style="background-color:rgba(55,55,55,1);padding: 10px 30px;" href="<?= base_url('dashboard/donation') ?>">Concordo com os termos</a>
+                    <a class="btn-default" href="<?= base_url('dashboard/donation') ?>">Concordo com os termos</a>
                 </div>
             </div>
         </div>

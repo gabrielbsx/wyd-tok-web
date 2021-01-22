@@ -39,17 +39,17 @@ $translate = [
                 <div class="scroller">
                     <div class="page all" data-bind="1">
                         <?php if (isset($ranking_paginate) && is_array($ranking_paginate)) : ?>
-                            <li style="margin:10px;" class="news-block">
-                                <div class="newsContent">
+                            <div class="news-block">
+                                <div class="newsContent" style="margin-right:10px;">
                                     <div class="teazer">
                                         <?php if (isset($ranking_paginate) && is_array($ranking_paginate)) : ?>
-                                            <table style="margin-left: 0px;width: 545px;font-size: 12px;font-family: 'Open Sans', sans-serif;" width="310">
+                                            <table style="border: 1px solid rgba(55, 55, 55, 1);background-color: rgba(55, 55, 55, 0.5);margin-left: 0px;width: 100%;font-size: 12px;font-family: 'Open Sans', sans-serif;">
                                                 <thead>
                                                     <tr>
                                                         <?php foreach ($ranking_paginate[0] as $key => $value) : ?>
                                                             <?php if (in_array($key, ['id', 'created_at', 'updated_at', 'deleted_at'])) continue; ?>
-                                                            <th style="margin:10px;padding:10px;text-align:left;">
-                                                                <?= $translate[$key] ?>
+                                                            <th style="background-color: rgba(0, 0, 0, 0.2);margin:10px;padding:10px;text-align:left;">
+                                                                <?= strtoupper($key) ?>
                                                             </th>
                                                         <?php endforeach; ?>
                                                     </tr>
@@ -90,7 +90,7 @@ $translate = [
                                 </div>
                                 <br class="clearer" />
                                 <br class="clearer" />
-                            </li>
+                            </div>
                         <?php endif; ?>
                     </div>
                 </div>

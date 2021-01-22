@@ -1,25 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt">
-<?= view('template/head') ?>
+<?= view('dashboard/template/head') ?>
 
 <body>
-    <div class="body-top">
-        <div class="body-bottom">
-            <?= view('template/header') ?>
-            <div class="wrapper">
-                <?= view('template/navbar') ?>
-                <?= view('template/message') ?>
-                <div class="container">
-                    <div class="c-container">
-                        <?= $this->renderSection('page') ?>
-                        <?= view('template/aside') ?>
-                    </div>
-                </div>
-                <?= view('template/footer') ?>
-            </div>
-        </div>
+    <?= view('dashboard/template/navbar') ?>
+    <?= view('dashboard/template/header') ?>
+    <div class="page animsition" style="background-image: url('<?= base_url('views/template/images/new/page_overlay.png') ?>');">
+        <?= view('dashboard/template/message') ?>
+        <?= $this->renderSection('page') ?>
     </div>
-    <?= view('template/scripts') ?>
+    <?= view('dashboard/template/scripts') ?>
 </body>
 
 </html>

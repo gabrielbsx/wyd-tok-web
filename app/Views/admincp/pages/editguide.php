@@ -1,73 +1,106 @@
 <?= $this->extend('admincp/layouts') ?>
 <?= $this->section('page') ?>
-<main class="content">
-    <div class="news-p">
-        <div class="block-title">
-            <div class="title">
-                <span>E</span>ditor de guias
-            </div>
-        </div>
-        <?php if (isset($guide)) : ?>
-            <form method="POST" id="loginForm" action="<?= base_url('auth/editguide') ?>">
-                <div class="block" style="margin:10px;text-align:center;">
-                    <input id="name" type="text" name="name" placeholder="Nome do guia" value="<?= $guide['name'] ?>" required />
-                </div>
-                <input type="hidden" name="id" value="<?= $guide['id'] ?>">
-                <div class="block" style="margin:10px;text-align:center;">
-                    <?php if (isset($recaptcha)) : ?>
-                        <div class="text-center">
-                            <div style="margin: 0 auto;text-align:Center;" class="g-recaptcha" data-sitekey="<?= $recaptcha ?>"></div>
-                        </div>
+<div class="panel-body">
+    <div class="table-wrapper">
+        <div class="table-scroll-container scrollbar-inner">
+            <table class="table table-hover dataTable table-striped width-full" id="gaTable">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;" colspan="3">
+                            Editor de artigos
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (isset($guide)) : ?>
+                        <form method="POST" id="loginForm" action="<?= base_url('auth/editguide') ?>">
+                            <tr>
+                                <td style="text-align:center;" colspan="3">
+                                    <span>
+                                        <div id="emailTypeBlock">
+                                            <div class="input-container">
+                                                <input style="background-color: rgba(0, 0, 0, 0.4); border: none;" type="text" class="form-control empty" name="name" value="<?= $guide['name'] ?>" />
+                                            </div>
+                                        </div>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <?php if (isset($recaptcha)) : ?>
+                                        <div class="g-recaptcha" style="display: inline-block" data-sitekey="<?= $recaptcha ?>"></div>
+                                    <?php endif; ?>
+                                    <input type="hidden" name="id" value="<?= $guide['id'] ?>">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="form-wrapper" style="border: none;text-align:center;">
+                                        <button type="submit" class="btn-default" id="tagLogin">
+                                            <span class="text"> Editar guia </span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </form>
+                    <?php else : ?>
+                        <tr>
+                            <td style="text-align:center;" colspan="3">
+                                <span>
+                                    <div id="emailTypeBlock">
+                                        <div class="input-container">
+                                            Guia inexistente
+                                        </div>
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
                     <?php endif; ?>
-                </div>
-                <div class="clearfix"></div>
-                <div style="text-align:center;margin: 0 auto;" class="login-button2">
-                    <button type="submit">
-                        <span class="text"> Editar </span>
-                    </button>
-                </div>
-            </form>
-        <?php else : ?>
-            <div style="text-align:center;">
-                Guia inexistente
-            </div>
-        <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
+    <?php if ($paginate_articles) : ?>
+        <div class="table-wrapper" style="margin:40px 0px;">
+            <div class="table-scroll-container scrollbar-inner">
+                <table class="table table-hover dataTable table-striped width-full" id="gaTable">
+                    <thead>
+                        <tr>
+                            <th colspan="3">
+                                Artigos do guia
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($paginate_articles as $key => $value) : ?>
+                            <tr>
+                                <td style="width:50vw;" style="text-align:center;" colspan="1">
+                                    <?= $value['title'] ?>
+                                </td>
+                                <td colspan="1">
+                                    <a href="<?= base_url('admin/editarticleguide/' . $value['id']) ?>" class="btn-default">
+                                        Alterar Artigo
+                                    </a>
 
-    <div class="news-p">
-        <div class="block-title">
-            <div class="title">
-                <span>E</span>ditor de artigos do guia
+                                </td>
+                                <td colspan="1">
+                                    <a href="<?= base_url('auth/delarticleguide/' . $value['id']) ?>" class="btn-default">
+                                        Deletar Artigo
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <tr>
+                            <td colspan="3">
+                                <?php if (isset($pager_articles)) : ?>
+                                    <?= $pager_articles->links('answers', 'pagination') ?>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-        <?php if ($paginate_articles) : ?>
-            <?php foreach ($paginate_articles as $key => $value) : ?>
-                <div style="display:inline-block;width:100%;background-color:rgb(55,55,55);margin-top: 10px;">
-                    <div style="padding:10px;display:flex;">
-                        <span style="padding:10px;color:white;">
-                            <?= $value['title'] ?>
-                        </span>
-                        <div style="display:flex;margin-left:auto;">
-                            <a href="<?= base_url('admin/editarticleguide/' . $value['id']) ?>" style="background-color:rgb(25,25,75);padding:10px 20px;">
-                                Alterar Artigo
-                            </a>
-                            <a href="<?= base_url('auth/delarticleguide/' . $value['id']) ?>" style="background-color:rgb(75,25,25);padding:10px 20px;">
-                                Deletar Artigo
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-            <div style="margin:10px;">
-                <?php if ($pager_articles) : ?>
-                    <?= $pager_articles->links('articles', 'pagination') ?>
-                <?php endif; ?>
-            </div>
-        <?php else : ?>
-            <div style="text-align:center;">
-                Não há artigos nesse guia!
-            </div>
-        <?php endif; ?>
-    </div>
-</main>
+    <?php endif; ?>
+</div>
 <?= $this->endSection() ?>

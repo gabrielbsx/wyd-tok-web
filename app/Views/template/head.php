@@ -58,6 +58,12 @@
         .menu-item:hover {
             color: rgba(255, 255, 255, 0.7) !important;
         }
+
+        #wrapper {
+            background: url(<?= base_url('views/template/images/new/page_overlay.png') ?>) no-repeat bottom fixed !important;
+            animation-duration: 800ms!important;
+            animation-fill-mode: both!important;
+        }
     </style>
     <script>
         (function(w, d, s, l, i) {
@@ -89,6 +95,7 @@
             position: relative;
             display: inline-block;
         }
+
         .dropdown-content {
             display: none;
             position: absolute;
@@ -98,8 +105,29 @@
             padding: 12px 16px;
             z-index: 99;
         }
+
         .dropdown:hover .dropdown-content {
             display: block;
         }
+
+        .btn-default {
+            border: 2px solid #ab8f54;
+            background: url(<?= base_url('template/lineage/site/images/bg_button.png') ?>) no-repeat;
+            color: #b59c67;
+            font-size: 18px;
+            padding: 6px 22px;
+            text-decoration: none;
+            font-family: 'MontserratSemiBold';
+            transition: 0.5s;
+            background-position: center center;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .btn-default:hover {
+            background: url(<?= base_url('template/lineage/site/images/bg_button_hover.png') ?>) no-repeat;
+            background-position: center center;
+        }
     </style>
+    <script src="https://cdn.tiny.cloud/1/1lhp4scr4dp6utok2d8hee393e6d3rs9yabki2p9jrqxwij5/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 </head>

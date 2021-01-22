@@ -1,27 +1,24 @@
 <?= $this->extend('dashboard/layouts') ?>
 <?= $this->section('page') ?>
-<main class="content">
-    <div class="news-p">
-        <div class="block-title">
-            <div class="title">
-                <span>P</span>ainel do usuário
-            </div>
-        </div>
-        <div class="last-more-fon">
-            <div id="content">
-                <div id="box1">
-                    <div id="content_center">
-                        <div class="box-style1">
-                            <div class="entry">
-                                <div style="text-align:center;padding:40px;">
-                                    <span>Bem vindo novamente, <?= session()->get('login')['username'] ?></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="panel-body">
+    <div class="table-wrapper">
+        <div class="table-scroll-container scrollbar-inner">
+            <table class="table table-hover dataTable table-striped width-full" id="gaTable">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;" colspan="3">
+                            Painel do Usuário
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="3">
+                            <span>Bem vindo novamente, <?= session()->get('login')['username'] ?>.
+                            </span>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </div>
-</main>
+</div>
 <?= $this->endSection() ?>

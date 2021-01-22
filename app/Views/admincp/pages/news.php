@@ -1,45 +1,81 @@
 <?= $this->extend('admincp/layouts') ?>
 <?= $this->section('page') ?>
-<main class="content">
-    <div class="news-p">
-        <div class="block-title">
-            <div class="title">
-                <span>S</span>istema de Notícias
+<div class="panel-body">
+    <div class="form-wrapper" style="height: auto;margin-bottom:40px;background-color: #231D24;">
+        <div class="col-sm-0 col-md-2"></div>
+        <div class=" col-sm-12 col-md-8">
+            <div style="text-align: center; padding:20px;">
+                <a href="<?= base_url('admin/createnews') ?>" class="btn-default" >
+                    <span class="text"> Adicionar nova notícia </span>
+                </a>
             </div>
         </div>
-        <div class="last-more-fon">
-            <div id="content">
-                <div style="margin:10px 0;text-align:center;">
-                    <a href="<?= base_url('admin/createnews') ?>" style="background-color:rgb(55,55,55);padding:10px 20px;display:block;text-align:center;margin:0 auto;">Adicionar nova notícia</a>
-                </div>
-                <?php if ($paginate_news) : ?>
-                    <?php foreach ($paginate_news as $key => $value) : ?>
-                        <div style="display:inline-block;width:100%;background-color:rgb(55,55,55);margin-top: 10px;">
-                            <div style="padding:10px;display:flex;">
-                                <span style="padding:10px;color:white;">
-                                    <?= $value['title'] ?>
-                                </span>
-                                <div style="display:flex;margin-left:auto;">
-                                    <a href="<?= base_url('admin/editnews/' . $value['id']) ?>" style="background-color:rgb(25,75,25);padding:10px 20px;">
-                                        Editar
-                                    </a>
-                                    <a href="<?= base_url('auth/delnews/' . $value['id']) ?>" style="background-color:rgb(75,25,25);padding:10px 20px;">
-                                        Deletar
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                    <div style="padding:10px;">
-                        <?php if ($pager_news) : ?>
-                            <?= $pager_news->links('guides', 'pagination') ?>
-                        <?php endif; ?>
-                    </div>
-                <?php else : ?>
-                    Não há notícias!
-                <?php endif; ?>
-            </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="table-wrapper">
+        <div class="table-scroll-container scrollbar-inner">
+            <table class="table table-hover dataTable table-striped width-full" id="gaTable">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;" colspan="3">
+                            Notícias
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($paginate_news) : ?>
+                        <?php foreach ($paginate_news as $key => $value) : ?>
+                            <tr>
+                                <td style="width:50vw" colspan="1">
+                                    <span>
+                                        <div id="emailTypeBlock">
+                                            <div class="input-container">
+                                                <?= $value['title'] ?>
+                                            </div>
+                                        </div>
+                                    </span>
+                                </td>
+                                <td colspan="1">
+                                    <span>
+                                        <div id="emailTypeBlock">
+                                            <div class="input-container">
+                                                <a href="<?= base_url('admin/editnews/' . $value['id']) ?>" class="btn-default">
+                                                    Editar notícia
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </span>
+                                </td>
+                                <td colspan="1">
+                                    <span>
+                                        <div id="emailTypeBlock">
+                                            <div class="input-container">
+                                                <a href="<?= base_url('auth/delnews/' . $value['id']) ?>" class="btn-default">
+                                                    Deletar notícia
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </span>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <tr>
+                            <td colspan="3">
+                                <?php if ($pager_news) : ?>
+                                    <?= $pager_news->links('news', 'pagination') ?>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php else : ?>
+                        <tr>
+                            <td style="text-align: center;" colspan="3">
+                                Não há notícias!
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
         </div>
     </div>
-</main>
+</div>
 <?= $this->endSection() ?>

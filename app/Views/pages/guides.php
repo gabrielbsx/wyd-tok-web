@@ -10,16 +10,16 @@
                 <div class="scroller">
                     <div class="page all" data-bind="1">
                         <?php foreach ($guides as $key => $value) : ?>
-                            <li style="margin:10px;" class="news-block">
-                                <div class="newsContent">
-                                    <div class="header">
+                            <div style="margin:10px;" class="news-block">
+                                <div class="newsContent" style="background-color: rgba(55, 55, 55, 0.5);border: 1px solid rgba(55, 55, 55, 1);">
+                                    <div class="header" style="padding:10px;background-color: rgba(0, 0, 0, 0.2);">
                                         <?= $value['name'] ?>
                                     </div>
-                                    <div class="teazer">
+                                    <div class="teazer" style="padding:10px;">
                                         <?php if (count($value['articles']) > 0) : ?>
                                             <?php foreach ($value['articles'] as $key2 => $value2) : ?>
                                                 <div style="padding:20px;display:inline-block;">
-                                                    <a class="menu-item" href="<?= base_url('/site/article/' . $value2['id']) ?>">
+                                                    <a class="menu-item btn-default" href="<?= base_url('/site/article/' . $value2['id']) ?>">
                                                         <?= $value2['title'] ?>
                                                     </a>
                                                 </div>
@@ -33,7 +33,7 @@
                                 </div>
                                 <br class="clearer" />
                                 <br class="clearer" />
-                            </li>
+                            </div>
                         <?php endforeach; ?>
                     </div>
                 </div>

@@ -1,33 +1,58 @@
 <?= $this->extend('admincp/layouts') ?>
 <?= $this->section('page') ?>
-<div class="content-more-news">
-    <div class="last-more-top">
-        Título do artigo para o guia
-    </div>
-    <div class="last-more-fon" style="margin: 0 auto;">
-        <form id="login_form" class="login-form block-p" method="POST" action="<?= base_url('auth/addarticleguide') ?>">
-            <div class="input-user">
-                <input type="text" name="title" placeholder="Título do artigo para o guia">
-            </div>
-            <textarea name="article" style="margin:10px;" class="editor">
-            </textarea>
-            <input type="hidden" name="id_guide" value="<?= $id ?>">
-            <div class="block" style="margin:10px;text-align:center;">
-                <?php if (isset($recaptcha)) : ?>
-                    <div class="text-center">
-                        <div style="margin: 0 auto;text-align:Center;" class="g-recaptcha" data-sitekey="<?= $recaptcha ?>"></div>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <button style="text-align:center;margin:0 auto;margin-top:10px;" type="submit">
-                Adicionar artigo
-            </button>
-        </form>
-        <a href="<?= base_url('admin/guides') ?>">
-            <button style="text-align:center;margin:0 auto;margin-top:10px;">
-                Voltar
-            </button>
-        </a>
+<div class="panel-body">
+    <div class="table-wrapper">
+        <div class="table-scroll-container scrollbar-inner">
+            <table class="table table-hover dataTable table-striped width-full" id="gaTable">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;" colspan="3">
+                            Criação de artigo
+                        </th>
+                    </tr>
+                    <form method="POST" action="<?= base_url('auth/addarticleguide') ?>" id="loginForm">
+                        <tr>
+                            <th colspan="3">
+                                <span>
+                                    <div id="emailTypeBlock">
+                                        <div class="input-container">
+                                            <label class="floating-label">Título</label>
+                                            <input style="background-color: rgba(0, 0, 0, 0.4); border: none;" type="text" class="form-control empty" name="title" />
+                                        </div>
+                                    </div>
+                                </span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="3">
+                                <span>
+                                    <div id="emailTypeBlock">
+                                        <div class="input-container">
+                                            <textarea style="margin:10px auto;" name="article" class="editor"></textarea>
+                                        </div>
+                                    </div>
+                                </span>
+                                <input type="hidden" name="id_guide" value="<?= $id ?>">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="3">
+                                <?php if (isset($recaptcha)) : ?>
+                                    <div class="g-recaptcha" style="display: inline-block" data-sitekey="<?= $recaptcha ?>"></div>
+                                <?php endif; ?>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="3" style="text-align:center;">
+                                <button type="submit" class="btn-default">
+                                    Criar Artigo
+                                </button>
+                            </th>
+                        </tr>
+                    </form>
+                </thead>
+            </table>
+        </div>
     </div>
 </div>
 <?= $this->endSection() ?>

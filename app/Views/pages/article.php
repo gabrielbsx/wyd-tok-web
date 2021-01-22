@@ -10,21 +10,20 @@
                 <div class="scroller">
                     <div class="page all" data-bind="1">
                         <?php if (isset($article)) : ?>
-                            <li style="margin:10px;" class="news-block">
-                                <div class="newsContent">
-                                    <div class="header">
+                            <div style="margin:10px;" class="news-block">
+                                <div class="newsContent" style="background-color: rgba(55, 55, 55, 0.5);border: 1px solid rgba(55, 55, 55, 1);">
+                                    <div class="header" style="padding:10px;background-color: rgba(0, 0, 0, 0.2);">
                                         <?= $article['title'] ?>
                                     </div>
-                                    <div class="date"><?= $article['updated_at'] ?? $article['created_at'] ?></div>
                                     <div class="teazer">
-                                        <p>
+                                        <div style="padding:20px;display:inline-block;">
                                             <?= $article['article'] ?>
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                                 <br class="clearer" />
                                 <br class="clearer" />
-                            </li>
+                            </div>
                         <?php else : ?>
                             <li style="margin:10px;" class="news-block">
                                 <div class="newsContent">

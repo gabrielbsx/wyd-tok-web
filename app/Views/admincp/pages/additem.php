@@ -1,56 +1,134 @@
 <?= $this->extend('admincp/layouts') ?>
 <?= $this->section('page') ?>
-<main class="content">
-    <div class="news-p">
-        <div class="block-title">
-            <div class="title">
-                <span>E</span>ditor de pacotes
-            </div>
-        </div>
-        <div class="last-more-fon">
-            <div id="content">
-                <form id="login_form" class="login-form block-p" method="POST" action="<?= base_url('auth/additem') ?>">
-                    <div class="block" style="margin:10px;text-align:center;">
-                        <input type="text" name="itemname" placeholder="Nome do item">
-                    </div>
-                    <div class="block" style="margin:10px;text-align:center;">
-                        <input type="number" type="number" name="itemid" placeholder="Item ID">
-                    </div>
-                    <div class="block" style="margin:10px;text-align:center;">
-                        <input type="number" type="number" name="effect1" placeholder="Efeito 1">
-                    </div>
-                    <div class="block" style="margin:10px;text-align:center;">
-                        <input type="number" type="number" name="effect_value1" placeholder="Valor do efeito 1">
-                    </div>
-                    <div class="block" style="margin:10px;text-align:center;">
-                        <input type="number" type="number" name="effect2" placeholder="Efeito 2">
-                    </div>
-                    <div class="block" style="margin:10px;text-align:center;">
-                        <input type="number" type="number" name="effect_value2" placeholder="Valor do efeito 2">
-                    </div>
-                    <div class="block" style="margin:10px;text-align:center;">
-                        <input type="number" type="number" name="effect3" placeholder="Efeito 3">
-                    </div>
-                    <div class="block" style="margin:10px;text-align:center;">
-                        <input type="number" type="number" name="effect_value3" placeholder="Valor do efeito 3">
-                    </div>
-                    <input type="hidden" name="id_donate" value="<?= $id ?>">
-                    <div class="block" style="margin:10px;text-align:center;">
-                        <?php if (isset($recaptcha)) : ?>
-                            <div class="text-center">
-                                <div style="margin: 0 auto;text-align:Center;" class="g-recaptcha" data-sitekey="<?= $recaptcha ?>"></div>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div style="text-align:center;margin: 0 auto;" class="login-button2">
-                        <button type="submit">
-                            <span class="text"> Editar </span>
-                        </button>
-                    </div>
-                </form>
-            </div>
+<div class="panel-body">
+    <div class="table-wrapper">
+        <div class="table-scroll-container scrollbar-inner">
+            <table class="table table-hover dataTable table-striped width-full" id="gaTable">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;" colspan="3">
+                            Adicionar de item
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form method="POST" id="loginForm" action="<?= base_url('auth/additem') ?>">
+                        <tr>
+                            <td style="text-align:center;" colspan="3">
+                                <span>
+                                    <div id="emailTypeBlock">
+                                        <div class="input-container">
+                                            <label class="floating-label">Nome do Item</label>
+                                            <input style="background-color: rgba(0, 0, 0, 0.4); border: none;" type="text" class="form-control empty" name="itemname" />
+                                        </div>
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;" colspan="3">
+                                <span>
+                                    <div id="emailTypeBlock">
+                                        <div class="input-container">
+                                            <label class="floating-label">Item ID</label>
+                                            <input style="background-color: rgba(0, 0, 0, 0.4); border: none;" type="text" class="form-control empty" name="itemid" />
+                                        </div>
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;" colspan="3">
+                                <span>
+                                    <div id="emailTypeBlock">
+                                        <div class="input-container">
+                                            <label class="floating-label">Efeito 1 do item</label>
+                                            <input style="background-color: rgba(0, 0, 0, 0.4); border: none;" type="text" class="form-control empty" name="effect1" />
+                                        </div>
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;" colspan="3">
+                                <span>
+                                    <div id="emailTypeBlock">
+                                        <div class="input-container">
+                                            <label class="floating-label">Valor de Efeito 1 do item</label>
+                                            <input style="background-color: rgba(0, 0, 0, 0.4); border: none;" type="text" class="form-control empty" name="effect_value1" />
+                                        </div>
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;" colspan="3">
+                                <span>
+                                    <div id="emailTypeBlock">
+                                        <div class="input-container">
+                                            <label class="floating-label">Efeito 2 do item</label>
+                                            <input style="background-color: rgba(0, 0, 0, 0.4); border: none;" type="text" class="form-control empty" name="effect2" />
+                                        </div>
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;" colspan="3">
+                                <span>
+                                    <div id="emailTypeBlock">
+                                        <div class="input-container">
+                                            <label class="floating-label">Valor de Efeito 2 do item</label>
+                                            <input style="background-color: rgba(0, 0, 0, 0.4); border: none;" type="text" class="form-control empty" name="effect_value2" />
+                                        </div>
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;" colspan="3">
+                                <span>
+                                    <div id="emailTypeBlock">
+                                        <div class="input-container">
+                                            <label class="floating-label">Efeito 3 do item</label>
+                                            <input style="background-color: rgba(0, 0, 0, 0.4); border: none;" type="text" class="form-control empty" name="effect3" />
+                                        </div>
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;" colspan="3">
+                                <span>
+                                    <div id="emailTypeBlock">
+                                        <div class="input-container">
+                                            <label class="floating-label">Valor de Efeito 3 do item</label>
+                                            <input style="background-color: rgba(0, 0, 0, 0.4); border: none;" type="text" class="form-control empty" name="effect_value3" />
+                                        </div>
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <?php if (isset($recaptcha)) : ?>
+                                    <div class="g-recaptcha" style="display: inline-block" data-sitekey="<?= $recaptcha ?>"></div>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="form-wrapper" style="border: none;text-align:center;">
+                                    <button type="submit" class="btn-default" id="tagLogin">
+                                        <span class="text"> Adicionar Item </span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </form>
+                </tbody>
+            </table>
         </div>
     </div>
-</main>
+</div>
 <?= $this->endSection() ?>

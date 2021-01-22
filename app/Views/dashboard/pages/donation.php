@@ -27,7 +27,7 @@
                             </div>
                             <div style="padding:15px 0;display:block;text-align:center;">
                                 <?php if (!($value['status'])) : ?>
-                                    <a style="color:white;background-color:rgb(55, 105, 55);padding:10px;" target="_blank" href="<?= $value['paymentUrl'] ?>">
+                                    <a class="btn-default" target="_blank" href="<?= $value['paymentUrl'] ?>">
                                         Pagar
                                     </a>
                                 <?php endif; ?>
@@ -83,10 +83,10 @@
                                 <?php endif; ?>
                                 <div style="background-color:rgba(105, 105, 105, 0.7);text-align:center;margin:10px;padding:20px 0;">
                                     <p style="margin-bottom: 20px;background-color:rgba(155,155,155,0.2);padding:10px;margin:0 10px;margin-bottom: 20px;">R$<?= $value['value'] ?></p>
-                                    <a style="background-color:rgba(105, 105, 155, 0.7);text-align:center;margin:10px;padding:10px;" href="<?= base_url('auth/purchasemp/' . $value['id']) ?>">
+                                    <a class="btn-default" href="<?= base_url('auth/purchasemp/' . $value['id']) ?>">
                                         Mercadopago
                                     </a>
-                                    <a style="background-color:rgba(105, 105, 155, 0.7);text-align:center;margin:10px;padding:10px;" href="<?= base_url('auth/purchasepic/' . $value['id']) ?>">
+                                    <a class="btn-default" href="<?= base_url('auth/purchasepic/' . $value['id']) ?>">
                                         Picpay
                                     </a>
                                 </div>

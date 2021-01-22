@@ -3,11 +3,6 @@
     <a href="<?= base_url('site') ?>" class="logo"></a>
     <ul class="mainMenu">
         <li>
-            <a class="menu-item" href="<?= base_url('site/news') ?>">
-                Notícias
-            </a>
-        </li>
-        <li>
             <a class="menu-item" href="<?= base_url('site/guides') ?>">
                 Guia do Jogo
             </a>
@@ -23,12 +18,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="<?= base_url('site/blacklist') ?>" class="menu-item">
-                        Blacklist
-                    </a>
-                </li>
-                <li>
-                    <a href="<?= base_url('site/guildmark') ?>" class="menu-item">
+                    <a href="<?= base_url('dashboard/guildmark') ?>" class="menu-item">
                         Guildmark
                     </a>
                 </li>
@@ -50,7 +40,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="<?= base_url('dashboard/support') ?>" class="menu-item">
+                    <a href="<?= base_url('dashboard/tickets') ?>" class="menu-item">
                         Fale Conosco
                     </a>
                 </li>
@@ -58,7 +48,7 @@
         </li>
     </ul>
     <div class="buttons">
-        <a href="<?= base_url('dashboard') ?>" class="buyCoinsButton">PAINEL DO USUÁRIO</a>
+        <a href="<?= !session()->has('login') ? base_url('dashboard/login') : base_url('dashboard') ?>" class="buyCoinsButton">PAINEL DO USUÁRIO</a>
     </div>
     <br class="clearer" />
 </div>
